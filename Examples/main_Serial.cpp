@@ -11,8 +11,8 @@ int main()
   using namespace std;
   namespace Bi= Bicycle;
 
-	Bi::Console::changeCp(Bi::Win1251);
-	Bi::Console::setTextAttr(Bi::ConsoleColor::lime);
+  Bi::Console::changeCp(Bi::Win1251);
+  Bi::Console::setTextAttr(Bi::ConsoleColor::lime);
 
   try
   {
@@ -25,7 +25,7 @@ int main()
 
     Bi::SerialPort serial;
     serial.setPortName(L"COM5");
-		serial.setReadTimeOut(30000);
+    serial.setReadTimeOut(30000);
     serial.setBaudRate(CBR_9600);
     serial.open();
 
@@ -38,16 +38,16 @@ int main()
       {
         cout<<"\""<<line<<"\""<<endl;
       }
-    }  
+    }
     while(!error);
 
     if(error == Bi::SerialError::WaitTimeOut)
     {
       Bi::Console::setTextAttr(Bi::ConsoleColor::blue);
-			cout<< "TimeOut!" <<endl;
+      cout<< "TimeOut!" <<endl;
     }
     else
-		{
+    {
       Bi::Console::setTextAttr(Bi::ConsoleColor::red);
       cout<< Bi::formatMessage(error)<<endl;
     }

@@ -11,32 +11,32 @@ namespace Bi= Bicycle;
 
 class EchoServer: public Bi::TcpServer
 {
-  public:
-     void start()
-     {
-        bind("localhost", 2016);
-        listen();
-        accept();
-     }
+public:
+  void start()
+  {
+    bind("localhost", 2016);
+    listen();
+    accept();
+  }
 
-  protected:
-     virtual void workWithClientInThread(Bi::TcpClient* client)  // override
-     {
-       while(true)
-       {
-         Bi::ulong error= 0;
-         Bi::IOStream stream(client);
-         if(stream.writeLine("Welcome to server!",error))
-         {
-           string line;
-           while(stream.readLine(line,error) && !error)
-           {
-              stream.writeLine(">>"+line,error);
-              line.clear();
-           }
-         }
-       }
-     }
+protected:
+  virtual void workWithClientInThread(Bi::TcpClient* client)  // override
+  {
+    while(true)
+    {
+      Bi::ulong error= 0;
+      Bi::IOStream stream(client);
+      if(stream.writeLine("Welcome to server!",error))
+      {
+        string line;
+        while(stream.readLine(line,error) && !error)
+        {
+          stream.writeLine(">>"+line,error);
+          line.clear();
+        }
+      }
+    }
+  }
 };
 
 int main()
@@ -44,8 +44,8 @@ int main()
   try
   {
     Bi::startup();
-		EchoServer server;
-		cout<< "Start server..."<< endl;
+    EchoServer server;
+    cout<< "Start server..."<< endl;
     server.start();
   }
   catch(const Bi::SocketException& e)
@@ -54,6 +54,6 @@ int main()
   }
   Bi::cleanup(true);
 
- return 0;
+  return 0;
 }
 
