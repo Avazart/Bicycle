@@ -43,7 +43,7 @@ int main()
 {
   try
   {
-    Bi::startup();
+    Bi::Wsa::startup();
     EchoServer server;
     cout<< "Start server..."<< endl;
     server.start();
@@ -52,7 +52,7 @@ int main()
   {
     cerr<< e.code()<< " "<< e.message();
   }
-  Bi::cleanup(true);
+  Bi::Wsa::cleanup(true);
 
   return 0;
 }

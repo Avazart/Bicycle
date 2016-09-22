@@ -12,7 +12,7 @@ int main()
 
   try
   {
-    Bi::startup();
+    Bi::Wsa::startup();
     Bi::TcpClient client;
     client.connect("www.cyberforum.ru",80);
     client.setTimeOut(5000);
@@ -50,7 +50,7 @@ int main()
   {
     std::cerr<<"Ошибка #"<< e.code()<<" "<< e.message()<<std::endl;
   }
-  Bi::cleanup(true);
+  Bi::Wsa::cleanup(true);
 
   getchar();
   return 0;

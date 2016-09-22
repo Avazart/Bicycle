@@ -13,9 +13,11 @@
 //---------------------------------------------------------------------------
 namespace Bicycle
 {
-	// инициализация и завершение работы с WinSocks
-	void startup();
-	void cleanup(bool nonThrow= false);
+  namespace Wsa
+  {
+    void startup();
+    void cleanup(bool nonThrow= false);
+  }
 
 	struct SocketError
 	{

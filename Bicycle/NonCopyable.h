@@ -7,15 +7,15 @@
 //---------------------------------------------------------------------------
 namespace Bicycle
 {
-	class NonCopyable
-	{
-	 protected:
-			NonCopyable() {}
-			~NonCopyable() {}
-	 private:
-			NonCopyable( const NonCopyable& );
-			const NonCopyable& operator=( const NonCopyable& );
-	};
+  class NonCopyable
+  {
+    protected:
+      NonCopyable() {}
+      ~NonCopyable() {}
+    private:
+      NonCopyable( const NonCopyable& );
+      const NonCopyable& operator=( const NonCopyable& );
+  };
 }
 //---------------------------------------------------------------------------
 #endif

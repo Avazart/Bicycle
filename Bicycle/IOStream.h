@@ -13,11 +13,13 @@
 namespace Bicycle
 {
 //---------------------------------------------------------------------------
+
+//---------------------------------------------------------------------------
 class IOStream: private NonCopyable
 {
 public:
-  IOStream(IODevice* device,
-           Buffer::SizeType bufferSize= DEFAULT_BUFF_SIZE);
+  explicit IOStream(IODevice* device,
+                    Buffer::SizeType bufferSize= DEFAULT_BUFF_SIZE);
   virtual ~IOStream();
 
   void setDevice(IODevice* device);
@@ -40,7 +42,7 @@ public:
                   ulong& errorCode,
                   const std::string& delemiter=CRLF);
 
-  // use exception:
+  // if errorCode==0  use exception:
 
   std::string readStr(ulong size, ulong* errorCode=0);
   std::string readLn(const std::string& delemiter=CRLF,ulong* errorCode=0);

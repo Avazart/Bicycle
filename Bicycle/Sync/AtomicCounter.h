@@ -16,24 +16,18 @@ class AtomicCounter: private NonCopyable
 	 public:
 		typedef LONG ValueType;
 
-		explicit AtomicCounter(ValueType initialValue=0)
-      :value_(initialValue){}
+    explicit AtomicCounter(ValueType initialValue=0);
 
-		ValueType increment()
-			{ return InterlockedIncrement(&value_); }
-		ValueType decrement()
-			{ return InterlockedDecrement(&value_); }
-		ValueType exchange(ValueType newValue)
-			{ return InterlockedExchange(&value_,newValue); }
+    ValueType increment();
+    ValueType decrement();
 
-		ValueType load() const
-			{ return value_; }
-		ValueType store(ValueType newValue)
-			{ return exchange(newValue); }
+    ValueType exchange(ValueType newValue);
 
-		operator ValueType()const{ return load(); }
-		ValueType operator=(ValueType value)
-			{ store(value); return value; }
+    ValueType load() const;
+    ValueType store(ValueType newValue);
+
+    operator ValueType()const;
+    ValueType operator=(ValueType value);
 
 	 private:
 			volatile ValueType value_;

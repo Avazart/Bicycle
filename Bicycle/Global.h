@@ -6,11 +6,11 @@
 #define GlobalH
 //---------------------------------------------------------------------------
 #ifndef UNICODE
-  #define UNICODE
+  #define UNICODE // WinApi  FinctionW()
 #endif
 
 #ifdef CRLF
-  #undef CRLF
+  #undef CRLF // Conflict with Indy in C++Builder
 #endif
 
 #ifdef _MSC_VER
@@ -24,26 +24,26 @@
 //---------------------------------------------------------------------------
 namespace Bicycle
 {
-    typedef wchar_t tchar;
-	typedef std::basic_string<tchar> tstring;
+  typedef wchar_t tchar;
+  typedef std::basic_string<tchar> tstring;
 
-	typedef WORD  ushort;
-	typedef DWORD ulong;
-	typedef UINT  uint;
-	typedef unsigned char uchar;
+  typedef WORD  ushort;
+  typedef DWORD ulong;
+  typedef UINT  uint;
+  typedef unsigned char uchar;
 
-	extern const std::string CRLF; // "\r\n"
-	extern const ulong DEFAULT_BUFF_SIZE; // 10 MB
-	extern const ulong DEFAULT_TIMEOUT;   // INFINITE
+  extern const std::string CRLF; // "\r\n"
+  extern const ulong DEFAULT_BUFF_SIZE; // 10 MB
+  extern const ulong DEFAULT_TIMEOUT;   // INFINITE
 
-	std::string formatMessage(ulong code);
+  std::string formatMessage(ulong code); // error code description
 
-	enum CodePage: uint
-	{
-		 OEM=  CP_OEMCP/*= 866*/,
-		 Win1251= 1251,
-		 Utf8= CP_UTF8/*= 65001*/
-	};
+  enum CodePage: uint
+  {
+    OEM=  CP_OEMCP/*= 866*/,
+    Win1251= 1251,
+    Utf8= CP_UTF8/*= 65001*/
+  };
 }
 //---------------------------------------------------------------------------
 #endif

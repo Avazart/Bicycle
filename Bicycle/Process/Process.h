@@ -24,7 +24,7 @@ public:
   virtual ulong write(const char* data, ulong size, ulong& errorCode);
   virtual void checkErrorCode(ulong code) const;
 
-  Process(const tstring& appName= tstring(),const tstring& cmdLine= tstring());
+  explicit Process(const tstring& appName= tstring(),const tstring& cmdLine= tstring());
   ~Process();
 
   void start();
