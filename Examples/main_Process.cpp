@@ -23,8 +23,6 @@ int main()
      process.setInheritHandle(true);
      process.start(L"",progPath+L" "+parms);
 
-     process.start();
-
      Bi::ulong error;
      Bi::IOStream stream(&process);
      do
