@@ -1,5 +1,5 @@
 #if defined(_MSC_VER)
-#pragma once
+	#pragma once
 #endif
 //---------------------------------------------------------------------------
 #ifndef EnvironmentH
@@ -17,7 +17,8 @@ typedef std::vector<tstring> Strings;
 class Environment
 {
 public:
-  enum:std::size_t{ npos= (std::size_t)-1 };
+enum:
+  std::size_t { npos= (std::size_t)-1 };
 
   Environment();
   explicit Environment(const Strings& strings);

@@ -141,25 +141,25 @@ void Process::start(const tstring& appName,
 void Process::createProcess()
 {
   tstring envStr =
-      environment_.empty()
-      ? tstring()
-      : environment_.toEnvironmentString();
+    environment_.empty()
+    ? tstring()
+    : environment_.toEnvironmentString();
 
 #ifdef UNICODE
   creationFlags_ |= CREATE_UNICODE_ENVIRONMENT;
 #endif
 
   started_=
-      CreateProcess( appName_.empty()? 0 : appName_.c_str(), // _In_opt_ LPCTSTR lpApplicationName,
-                     cmdLine_.empty()? 0 : const_cast<tchar*>(cmdLine_.c_str()), // _Inout_opt_ LPTSTR lpCommandLine,
-                     &security_,        // _In_opt_ LPSECURITY_ATTRIBUTES lpProcessAttributes,
-                     &security_,        // _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes,
-                     inheritHandle_,    // _In_  BOOL  bInheritHandles,
-                     creationFlags_|priority_,    //  _In_ DWORD dwCreationFlags,
-                     envStr.empty()? 0 : (LPVOID)envStr.c_str(), // _In_opt_ LPVOID lpEnvironment,
-                     currentDir_.empty()? 0: currentDir_.c_str(),// _In_opt_ LPCTSTR lpCurrentDirectory,
-                     &startupInfo_, // _In_  LPSTARTUPINFO lpStartupInfo,
-                     &processInfo_); //  _Out_ LPPROCESS_INFORMATION lpProcessInformation
+    CreateProcess( appName_.empty()? 0 : appName_.c_str(), // _In_opt_ LPCTSTR lpApplicationName,
+                   cmdLine_.empty()? 0 : const_cast<tchar*>(cmdLine_.c_str()), // _Inout_opt_ LPTSTR lpCommandLine,
+                   &security_,        // _In_opt_ LPSECURITY_ATTRIBUTES lpProcessAttributes,
+                   &security_,        // _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes,
+                   inheritHandle_,    // _In_  BOOL  bInheritHandles,
+                   creationFlags_|priority_,    //  _In_ DWORD dwCreationFlags,
+                   envStr.empty()? 0 : (LPVOID)envStr.c_str(), // _In_opt_ LPVOID lpEnvironment,
+                   currentDir_.empty()? 0: currentDir_.c_str(),// _In_opt_ LPCTSTR lpCurrentDirectory,
+                   &startupInfo_, // _In_  LPSTARTUPINFO lpStartupInfo,
+                   &processInfo_); //  _Out_ LPPROCESS_INFORMATION lpProcessInformation
 
   if(!started_)
     throw SystemException();
@@ -171,10 +171,17 @@ void Process::waitForInputIdle(ulong msecs,ulong* errorCode)
   ulong waitResult= WaitForInputIdle(processInfo_.hProcess,msecs);
   switch(waitResult)
   {
-  case 0:            error= ProcessError::Success;     break;
-  case WAIT_TIMEOUT: error= ProcessError::WaitTimeOut; break;
-  case WAIT_FAILED:  error= GetLastError();            break;
-  default: break;
+  case 0:
+    error= ProcessError::Success;
+    break;
+  case WAIT_TIMEOUT:
+    error= ProcessError::WaitTimeOut;
+    break;
+  case WAIT_FAILED:
+    error= GetLastError();
+    break;
+  default:
+    break;
   }
 
   if(errorCode)
@@ -189,10 +196,17 @@ void Process::waitForFinished(ulong msecs,ulong* errorCode)
   ulong waitResult= WaitForSingleObject(processInfo_.hProcess, msecs);
   switch(waitResult)
   {
-  case 0:            error= ProcessError::Success;     break;
-  case WAIT_TIMEOUT: error= ProcessError::WaitTimeOut; break;
-  case WAIT_FAILED:  error= GetLastError();            break;
-  default: break;
+  case 0:
+    error= ProcessError::Success;
+    break;
+  case WAIT_TIMEOUT:
+    error= ProcessError::WaitTimeOut;
+    break;
+  case WAIT_FAILED:
+    error= GetLastError();
+    break;
+  default:
+    break;
   }
 
   if(errorCode)
@@ -389,7 +403,7 @@ void Process::closeWindows()
 BOOL CALLBACK enumThreadWndProc(HWND hwnd,LPARAM lParam)
 {
   std::vector<HWND>* windows=
-      reinterpret_cast<std::vector<HWND>*>(lParam);
+    reinterpret_cast<std::vector<HWND>*>(lParam);
   windows->push_back(hwnd);
   return TRUE;
 }
