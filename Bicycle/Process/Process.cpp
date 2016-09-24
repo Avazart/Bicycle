@@ -152,8 +152,8 @@ void Process::createProcess()
   started_=
     CreateProcess( appName_.empty()? 0 : appName_.c_str(), // _In_opt_ LPCTSTR lpApplicationName,
                    cmdLine_.empty()? 0 : const_cast<tchar*>(cmdLine_.c_str()), // _Inout_opt_ LPTSTR lpCommandLine,
-							 0,	 //  &security_,        // _In_opt_ LPSECURITY_ATTRIBUTES lpProcessAttributes,
-							 0,	 //  &security_,        // _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes,
+                   &security_,        // _In_opt_ LPSECURITY_ATTRIBUTES lpProcessAttributes,
+                   &security_,        // _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes,
                    inheritHandle_,    // _In_  BOOL  bInheritHandles,
                    creationFlags_|priority_,    //  _In_ DWORD dwCreationFlags,
                    envStr.empty()? 0 : (LPVOID)envStr.c_str(), // _In_opt_ LPVOID lpEnvironment,
