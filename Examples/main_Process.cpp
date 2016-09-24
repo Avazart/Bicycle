@@ -1,4 +1,5 @@
-﻿#include <iostream>
+#include <iostream>
+
 #include "Process/Process.h"
 #include "Console.h"
 #include "IOStream.h"
@@ -8,9 +9,8 @@ int main()
   using namespace std;
   namespace Bi= Bicycle;
 
-  Bi::Console::setTextAttr(Bi::ConsoleColor::lime);
-
-  try
+	Bi::Console::setTextAttr(Bi::ConsoleColor::lime);
+	try
   {
     Bi::Process process;
 

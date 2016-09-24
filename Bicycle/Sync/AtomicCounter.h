@@ -1,5 +1,5 @@
 #ifdef _MSC_VER
-  #pragma once
+#pragma once
 #endif
 //---------------------------------------------------------------------------
 #ifndef AtomicCounterH
@@ -13,24 +13,24 @@ namespace Bicycle
 //---------------------------------------------------------------------------
 class AtomicCounter: private NonCopyable
 {
-	 public:
-		typedef LONG ValueType;
+public:
+  typedef LONG ValueType;
 
-    explicit AtomicCounter(ValueType initialValue=0);
+  explicit AtomicCounter(ValueType initialValue=0);
 
-    ValueType increment();
-    ValueType decrement();
+  ValueType increment();
+  ValueType decrement();
 
-    ValueType exchange(ValueType newValue);
+  ValueType exchange(ValueType newValue);
 
-    ValueType load() const;
-    ValueType store(ValueType newValue);
+  ValueType load() const;
+  ValueType store(ValueType newValue);
 
-    operator ValueType()const;
-    ValueType operator=(ValueType value);
+  operator ValueType()const;
+  ValueType operator=(ValueType value);
 
-	 private:
-			volatile ValueType value_;
+private:
+  volatile ValueType value_;
 };
 //---------------------------------------------------------------------------
 }

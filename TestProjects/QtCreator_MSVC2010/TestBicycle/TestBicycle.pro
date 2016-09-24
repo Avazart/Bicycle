@@ -4,4 +4,6 @@ SUBDIRS += \
     TestProcess \
     TestSerial \
     TestTcpClient \
-    TestTcpServer
+    TestTcpServer \
+    TestEnvironment
+

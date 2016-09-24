@@ -23,15 +23,16 @@ void Process::checkErrorCode(ulong code)const
 //------------------- Process --------------------------------------------
 Process::Process(const tstring& appName,
                  const tstring& cmdLine)
-  :appName_(appName),
+  : appName_(appName),
     cmdLine_(cmdLine),
 
     started_(false),
     priority_(NORMAL_PRIORITY_CLASS),
+    creationFlags_(0),
     usePipes_(true)
 {
   security_.nLength= sizeof(security_);
-  security_.bInheritHandle= false;
+  security_.bInheritHandle = inheritHandle_ = true;
   security_.lpSecurityDescriptor= NULL;
 
   ZeroMemory(&startupInfo_, sizeof(startupInfo_));
@@ -139,17 +140,22 @@ void Process::start(const tstring& appName,
 //---------------------------------------------------------------------------
 void Process::createProcess()
 {
+  tstring envStr =
+        environment_.empty()
+        ? tstring()
+        : environment_.toEnvironmentString();
+
   started_=
-      CreateProcess( appName_.empty()?   0: appName_.c_str(),
-                     cmdLine_.empty()? 0: const_cast<tchar*>(cmdLine_.c_str()), // ???
-                     &security_,
-                     &security_,
-                     true,
-                     priority_,
-                     0,
-                     currentDir_.empty()? 0: currentDir_.c_str(),
-                     &startupInfo_,
-                     &processInfo_);
+      CreateProcess( appName_.empty()? 0 : appName_.c_str(), // _In_opt_ LPCTSTR lpApplicationName,
+                     cmdLine_.empty()? 0 : const_cast<tchar*>(cmdLine_.c_str()), // _Inout_opt_ LPTSTR lpCommandLine,
+                     &security_,        // _In_opt_ LPSECURITY_ATTRIBUTES lpProcessAttributes,
+                     &security_,        // _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes,
+                     inheritHandle_,    // _In_  BOOL  bInheritHandles,
+                     creationFlags_|priority_,    //  _In_ DWORD dwCreationFlags,
+                     envStr.empty()? 0 : (LPVOID)envStr.c_str(), // _In_opt_ LPVOID lpEnvironment,
+                     currentDir_.empty()? 0: currentDir_.c_str(),// _In_opt_ LPCTSTR lpCurrentDirectory,
+                     &startupInfo_, // _In_  LPSTARTUPINFO lpStartupInfo,
+                     &processInfo_); //  _Out_ LPPROCESS_INFORMATION lpProcessInformation
 
   if(!started_)
     throw SystemException();
@@ -161,10 +167,10 @@ void Process::waitForInputIdle(ulong msecs,ulong* errorCode)
   ulong waitResult= WaitForInputIdle(processInfo_.hProcess,msecs);
   switch(waitResult)
   {
-  case 0:            error= ProcessError::Success;     break;
-  case WAIT_TIMEOUT: error= ProcessError::WaitTimeOut; break;
-  case WAIT_FAILED:  error= GetLastError();            break;
-  default: break;
+    case 0:            error= ProcessError::Success;     break;
+    case WAIT_TIMEOUT: error= ProcessError::WaitTimeOut; break;
+    case WAIT_FAILED:  error= GetLastError();            break;
+    default: break;
   }
 
   if(errorCode)
@@ -179,10 +185,10 @@ void Process::waitForFinished(ulong msecs,ulong* errorCode)
   ulong waitResult= WaitForSingleObject(processInfo_.hProcess, msecs);
   switch(waitResult)
   {
-  case 0:            error= ProcessError::Success;     break;
-  case WAIT_TIMEOUT: error= ProcessError::WaitTimeOut; break;
-  case WAIT_FAILED:  error= GetLastError();            break;
-  default: break;
+    case 0:            error= ProcessError::Success;     break;
+    case WAIT_TIMEOUT: error= ProcessError::WaitTimeOut; break;
+    case WAIT_FAILED:  error= GetLastError();            break;
+    default: break;
   }
 
   if(errorCode)
@@ -215,7 +221,12 @@ void Process::setCurrentDir(const tstring& dir)
 //---------------------------------------------------------------------------
 void Process::setInheritHandle(bool inheritHandle)
 {
-  security_.bInheritHandle= inheritHandle;
+  inheritHandle_= inheritHandle;
+}
+//---------------------------------------------------------------------------
+void Process::setSecurityInheritHandle(bool inheritHandle)
+{
+   security_.bInheritHandle= inheritHandle;
 }
 //---------------------------------------------------------------------------
 void Process::setShowWindow(unsigned short showWindow)
@@ -233,24 +244,54 @@ void Process::setWriteTimeOut(ulong msecs)
   stdIn_.writer.setTimeOut(msecs);
 }
 //---------------------------------------------------------------------------
+void Process::setCreationFlags(ulong flags)
+{
+  creationFlags_= flags;
+}
+//---------------------------------------------------------------------------
 void Process::setPriority(ulong priority)
 {
-  priority_= priority;
+  priority_ = priority;
 }
 //---------------------------------------------------------------------------
-unsigned long Process::priority()
+void Process::setEnvironment(const Environment &environment)
 {
-  return priority_;
+  environment_= environment;
 }
 //---------------------------------------------------------------------------
-void Process::setFlags(ulong flags)
+const Environment &Process::environment() const
+{
+  return environment_;
+}
+//---------------------------------------------------------------------------
+ulong Process::creationFlags()const
+{
+  return creationFlags_;
+}
+//---------------------------------------------------------------------------
+ulong Process::priority() const
+{
+   return priority_;
+}
+//---------------------------------------------------------------------------
+void Process::setStartupInfoFlags(ulong flags)
 {
   startupInfo_.dwFlags= flags;
 }
 //---------------------------------------------------------------------------
-ulong Process::flags() const
+ulong Process::startupInfoFlags() const
 {
   return startupInfo_.dwFlags;
+}
+//---------------------------------------------------------------------------
+bool Process::inheritHandle() const
+{
+  return inheritHandle_ == TRUE;
+}
+//--------------------------------------------------------------------------
+bool Process::securityInheritHandle() const
+{
+  return security_.bInheritHandle == TRUE;
 }
 //---------------------------------------------------------------------------
 tstring Process::appName()const

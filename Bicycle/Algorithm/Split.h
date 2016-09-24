@@ -6,8 +6,12 @@
 #include "Utils.h"
 #include "Begin.h"
 #include "End.h"
+
+#include "RangeConstIterator.h"
+#include "IteratorRange.h"
+#include "AsLiteral.h"
 //----------------------------------------------------------------------
-namespace My
+namespace Bicycle
 {
 //----------------------------------------------------------------------
 	template<class InputIt1, class InputIt2>
@@ -158,8 +162,8 @@ namespace My
 		iterator_range< typename range_const_iterator<InT>::type >
 			 lit_range(as_literal(in));
 
-		range_const_iterator<InT>::type first= begin(lit_range);
-		range_const_iterator<InT>::type last=  end(lit_range);
+    range_const_iterator<InT>::type first= Bicycle::begin(lit_range);
+    range_const_iterator<InT>::type last=  Bicycle::end(lit_range);
 		range_const_iterator<InT>::type cur=   first;
 
 		while(cur != last)
@@ -176,18 +180,7 @@ namespace My
 		}
 		if(!skip_empty_parts || first!= cur)
 				out.push_back(OutT::value_type(first,cur));
-	}	
-//----------------------------------------------------------------------
-//	template<typename OutT, typename InT>
-//	void join(OutT& out,const InT& in,const InT splitter)
-//	{
-//		InT::const_iterator first= in.begin();
-//		InT::const_iterator last= in.end();
-//		for( ; first!=last; ++first)
-//		{
-//			out.push_back(*first);
-//		}
-//	}
+	}
 //----------------------------------------------------------------------
 }
 //----------------------------------------------------------------------

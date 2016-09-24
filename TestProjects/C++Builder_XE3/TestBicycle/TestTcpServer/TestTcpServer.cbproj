@@ -30,10 +30,10 @@
     <PropertyGroup Condition="'$(Base)'!=''">
         <Multithreaded>true</Multithreaded>
         <ProjectType>CppConsoleApplication</ProjectType>
-        <IncludePath>..\..\..\..\Examples\;..\..\..\..\Bicycle\Tcp\;..\..\..\..\Bicycle\;$(IncludePath)</IncludePath>
+        <IncludePath>..\..\..\..\Bicycle\Sync\;..\..\..\..\Examples\;..\..\..\..\Bicycle\Tcp\;..\..\..\..\Bicycle\;$(IncludePath)</IncludePath>
         <_TCHARMapping>char</_TCHARMapping>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
-        <ILINK_LibraryPath>..\..\..\..\Examples\;..\..\..\..\Bicycle\Tcp\;..\..\..\..\Bicycle\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <ILINK_LibraryPath>..\..\..\..\Bicycle\Sync\;..\..\..\..\Examples\;..\..\..\..\Bicycle\Tcp\;..\..\..\..\Bicycle\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
         <DynamicRTL>true</DynamicRTL>
         <IntermediateOutputDir>.\$(Platform)\$(Config)</IntermediateOutputDir>
@@ -95,6 +95,10 @@
         <CppCompile Include="..\..\..\..\Bicycle\NonCopyable.cpp">
             <DependentOn>..\..\..\..\Bicycle\NonCopyable.h</DependentOn>
             <BuildOrder>5</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\..\..\..\Bicycle\Sync\AtomicCounter.cpp">
+            <DependentOn>..\..\..\..\Bicycle\Sync\AtomicCounter.h</DependentOn>
+            <BuildOrder>14</BuildOrder>
         </CppCompile>
         <CppCompile Include="..\..\..\..\Bicycle\SystemException.cpp">
             <DependentOn>..\..\..\..\Bicycle\SystemException.h</DependentOn>

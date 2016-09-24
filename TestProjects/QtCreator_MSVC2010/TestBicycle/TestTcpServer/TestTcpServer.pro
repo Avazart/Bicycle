@@ -34,7 +34,7 @@ HEADERS += \
     $${BICYCLE_DIR}/Tcp/TcpClient.h \
     $${BICYCLE_DIR}/Tcp/TcpServer.h \
     $${BICYCLE_DIR}/Tcp/TcpSockets.h \
-    $${BICYCLE_DIR}/Thread.h
+    $${BICYCLE_DIR}/Thread.h \
     $${BICYCLE_DIR}/Sync/AtomicCounter.h
 
 LIBS += Ws2_32.lib

@@ -10,6 +10,7 @@
 #include "../SystemException.h"
 
 #include "Pipe.h"
+#include "Environment.h"
 // ---------------------------------------------------------------------------
 namespace Bicycle
 {
@@ -52,22 +53,29 @@ public:
   void setCmdLine(const tstring& cmdLine);
   void setCurrentDir(const tstring& dir);
 
-  void setFlags(ulong flags);
+  void setStartupInfoFlags(ulong startupInfoFlags);
   void setInheritHandle(bool inheritHandle);
+  void setSecurityInheritHandle(bool inheritHandle);
+
   void setShowWindow(unsigned short showWindow);
+  void setCreationFlags(ulong flags);
   void setPriority(ulong priority);
-  // void 	setEnvironment(const ... environment)
+
+  void 	setEnvironment(const Environment& environment);
+  const Environment& environment()const;
 
   // Getters:
   tstring appName()   const;
   tstring cmdLine()   const;
   tstring currentDir()const;
 
-  ulong flags()const;
-  // bool inheritHandle() const;
+  ulong startupInfoFlags()const;
+  bool inheritHandle() const;
+  bool securityInheritHandle() const;
+
   // unsigned short showWindow() const;
-  ulong priority();
-  // Enviroment enviroment()const;
+  ulong creationFlags() const;
+  ulong priority()const;
 
   // Process info
   HANDLE processHandle() const;
@@ -89,8 +97,12 @@ private:
   PROCESS_INFORMATION processInfo_;
   SECURITY_ATTRIBUTES security_;
 
+  Environment environment_;
+
   BOOL   started_;
+  ulong  creationFlags_;
   ulong  priority_;
+  BOOL   inheritHandle_;
   bool   usePipes_;
 
   struct

@@ -111,6 +111,9 @@
             <DependentOn>..\..\..\..\Bicycle\NonCopyable.h</DependentOn>
             <BuildOrder>6</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\..\..\..\Bicycle\Process\Environment.cpp">
+            <BuildOrder>11</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\..\..\..\Bicycle\Process\Pipe.cpp">
             <DependentOn>..\..\..\..\Bicycle\Process\Pipe.h</DependentOn>
             <BuildOrder>9</BuildOrder>

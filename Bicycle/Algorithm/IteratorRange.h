@@ -3,6 +3,7 @@
 #define IteratorRangeH
 // ---------------------------------------------------------------------------
 #include "IteratorRange.h"
+#include "RangeIterator.h"
 
 #include "Begin.h"
 #include "End.h"
@@ -16,13 +17,13 @@ namespace Bicycle
 		template<class ForwardRange>
 		static IteratorT adl_begin(ForwardRange& r)
 		{
-			return IteratorT(begin(r));
+      return IteratorT(Bicycle::begin(r));
 		}
 
 		template<class ForwardRange>
 		static IteratorT adl_end(ForwardRange& r)
 		{
-			return IteratorT(end(r));
+      return IteratorT(Bicycle::end(r));
 		}
 	};
 // -------------------------------------------------------------------------------

@@ -3,12 +3,13 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
+
 EXAMPLES_DIR = ../../../../Examples
 BICYCLE_DIR =  ../../../../Bicycle
 
 INCLUDEPATH+= $${BICYCLE_DIR}
 
-SOURCES += $${EXAMPLES_DIR}/main_Process.cpp \
+SOURCES += $${EXAMPLES_DIR}/main_Environment.cpp \
     $${BICYCLE_DIR}/Process/Pipe.cpp \
     $${BICYCLE_DIR}/Process/Process.cpp \
     $${BICYCLE_DIR}/Process/Environment.cpp \
@@ -19,7 +20,6 @@ SOURCES += $${EXAMPLES_DIR}/main_Process.cpp \
     $${BICYCLE_DIR}/IOStream.cpp \
     $${BICYCLE_DIR}/NonCopyable.cpp \
     $${BICYCLE_DIR}/SystemException.cpp
-
 
 HEADERS += \
     $${BICYCLE_DIR}/Process/Pipe.h \
