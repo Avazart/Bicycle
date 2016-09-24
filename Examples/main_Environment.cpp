@@ -20,8 +20,7 @@ int main(int argc, char *[])
   try
   {
     Bi::Environment env = Bi::ProcessEnvironment::environment();
-    env.remove(0);
-    // print(env);
+    print(env);
 
     Bi::tstring filePath(MAX_PATH,L'0');
     Bi::ulong length= GetModuleFileName(0,&filePath[0],filePath.size());
@@ -31,14 +30,9 @@ int main(int argc, char *[])
     {
 			Bi::Process process;
 
-			env.clear();
       env.appendVariable(L"MyVAR1",L"MyValue2");
       env.appendVariable(L"MyVAR2",L"MyValue2");
       process.setEnvironment(env);
-
-      wcout<< env.toEnvironmentString() << endl;
-
-      wcout<< filePath <<endl;
 
       process.setCmdLine(filePath+L" -arg");
       process.start();

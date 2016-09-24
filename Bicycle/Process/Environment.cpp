@@ -169,10 +169,7 @@ tstring Environment::toEnvironmentString() const
   tstring str;
 
   for(std::size_t i=0; i<strings_.size(); ++i)
-  {
     str.append(strings_[i]+TEXT('\0'));
-  }
-  // str.append(TEXT('\0'));
 
   return str;
 }

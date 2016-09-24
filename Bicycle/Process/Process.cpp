@@ -145,6 +145,10 @@ void Process::createProcess()
         ? tstring()
         : environment_.toEnvironmentString();
 
+#ifdef UNICODE
+    creationFlags_ |= CREATE_UNICODE_ENVIRONMENT;
+#endif
+
   started_=
       CreateProcess( appName_.empty()? 0 : appName_.c_str(), // _In_opt_ LPCTSTR lpApplicationName,
                      cmdLine_.empty()? 0 : const_cast<tchar*>(cmdLine_.c_str()), // _Inout_opt_ LPTSTR lpCommandLine,
