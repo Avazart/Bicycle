@@ -29,15 +29,15 @@ Process::Process(const tstring& appName,
     started_(false),
     priority_(NORMAL_PRIORITY_CLASS),
     creationFlags_(0),
-    usePipes_(true)
+    usePipes_(false)
 {
   security_.nLength= sizeof(security_);
-  security_.bInheritHandle = inheritHandle_ = true;
+  security_.bInheritHandle = inheritHandle_ = false;
   security_.lpSecurityDescriptor= NULL;
 
   ZeroMemory(&startupInfo_, sizeof(startupInfo_));
   startupInfo_.cb= sizeof(startupInfo_);
-  //	startupInfo_.wShowWindow= SW_HIDE;
+  startupInfo_.wShowWindow= SW_NORMAL;
   startupInfo_.dwFlags= STARTF_USESHOWWINDOW;
 
   ZeroMemory(&processInfo_, sizeof(processInfo_));
@@ -152,8 +152,8 @@ void Process::createProcess()
   started_=
     CreateProcess( appName_.empty()? 0 : appName_.c_str(), // _In_opt_ LPCTSTR lpApplicationName,
                    cmdLine_.empty()? 0 : const_cast<tchar*>(cmdLine_.c_str()), // _Inout_opt_ LPTSTR lpCommandLine,
-                   &security_,        // _In_opt_ LPSECURITY_ATTRIBUTES lpProcessAttributes,
-                   &security_,        // _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes,
+							 0,	 //  &security_,        // _In_opt_ LPSECURITY_ATTRIBUTES lpProcessAttributes,
+							 0,	 //  &security_,        // _In_opt_ LPSECURITY_ATTRIBUTES lpThreadAttributes,
                    inheritHandle_,    // _In_  BOOL  bInheritHandles,
                    creationFlags_|priority_,    //  _In_ DWORD dwCreationFlags,
                    envStr.empty()? 0 : (LPVOID)envStr.c_str(), // _In_opt_ LPVOID lpEnvironment,

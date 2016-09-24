@@ -11,40 +11,42 @@ using namespace std;
 namespace Bi= Bicycle;
 
 void print(const Bi::Environment& env);
-void readOutput(Bi::Process& process);
 
 int main(int argc, char* [])
 {
-  // setlocale(LC_ALL, "");
+	// setlocale(LC_ALL, "");
+	try
+	{
+		Bi::Environment env= Bi::ProcessEnvironment::environment();
 
-  Bi::Console::setTextAttr(Bi::ConsoleColor::green);
-  try
-  {
-    Bi::Environment env= Bi::ProcessEnvironment::environment();
-    print(env);
+		if(argc==1)	 Bi::Console::setTextAttr(Bi::ConsoleColor::lime);
+		else         Bi::Console::setTextAttr(Bi::ConsoleColor::aqua);
 
-    Bi::tstring filePath(MAX_PATH, L'\0');
-    Bi::ulong length= GetModuleFileName(0, &filePath[0], filePath.size());
-    filePath.resize(length);
+		print(env);
 
-    if(argc== 1)
-    {
-      Bi::Process process;
+		Bi::tstring filePath(MAX_PATH,L'\0');
+		Bi::ulong length= GetModuleFileName(0, &filePath[0], filePath.size());
+		filePath.resize(length);
 
-      env.appendVariable(L"MyVAR1", L"MyValue2");
-      env.appendVariable(L"MyVAR2", L"MyValue2");
-      process.setEnvironment(env);
+		if(argc==1)
+		{
+			Bi::Process process;
 
-      process.setCmdLine(filePath+ L" -arg");
-      process.start();
+			env.appendVariable(L"MyVAR1", L"MyValue1");
+			env.appendVariable(L"MyVAR2", L"MyValue2");
+			env.setVariable(L"Path",env.variable(L"Path")+L";MyValue3");
+			process.setEnvironment(env);
 
-      Bi::Console::setTextAttr(Bi::ConsoleColor::lime);
-      wcout<< endl<< L"Children process:"<< endl;
-      Bi::Console::setTextAttr(Bi::ConsoleColor::aqua);
-      readOutput(process);
+			process.setShowWindow(SW_NORMAL);
+			process.setCreationFlags(process.creationFlags()|CREATE_NEW_CONSOLE);
 
-      process.waitForFinished();
-    }
+			process.setCmdLine(filePath+ L" -arg");
+			process.start();
+
+			wcout<< endl<< L"Create children process..."<< endl;
+			process.waitForFinished();
+			wcout<<"Children process finished."<<endl;
+		}
   }
   catch (const Bi::SystemException& e)
   {
@@ -53,49 +55,15 @@ int main(int argc, char* [])
     cerr<< e.what()<< endl;
   }
 
-  getchar();
+	getchar();
   return 0;
 }
-
 // --------------------------------------------------------------------------
 void print(const Bi::Environment& env)
 {
-  for (std::size_t i= 0; i< env.strings().size(); ++i)
-  {
-    wcout<< env.strings()[i]<< std::endl;
-  }
-}
-
-// --------------------------------------------------------------------------
-void readOutput(Bi::Process& process)
-{
-  Bi::ulong error;
-  Bi::IOStream stream(& process);
-  do
-  {
-    string line;
-    if (stream.readLine(line, error)!= 0)
-    {
-      cout<< "\""<< line<< "\""<< endl;
-    }
-  }
-  while (!error);
-
-  if (error== Bi::ProcessError::WaitTimeOut) // Read TimeOut
-  {
-    Bi::Console::setTextAttr(Bi::ConsoleColor::blue);
-    cout<< "Timeout!"<< endl;
-  }
-  else if (error== Bi::ProcessError::Broken) // Pipe closed (App Finished)
-  {
-    Bi::Console::setTextAttr(Bi::ConsoleColor::yellow);
-    cout<< "Exit code: "<< process.exitCode()<< endl;
-  }
-  else // Error
-  {
-    Bi::Console::changeCp(Bi::Win1251);
-    Bi::Console::setTextAttr(Bi::ConsoleColor::red);
-    cerr<< Bi::formatMessage(error)<< endl;
-  }
+	for (std::size_t i= 0; i< env.strings().size(); ++i)
+	{
+		wcout<< env.strings()[i]<< std::endl;
+	}
 }
 // --------------------------------------------------------------------------

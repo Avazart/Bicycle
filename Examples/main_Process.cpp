@@ -18,9 +18,12 @@ int main()
     wstring parms= L"google.com";
     wstring workDir= L".";
 
-    process.setReadTimeOut(30000);
-    process.setCurrentDir(workDir);
+    process.setReadTimeOut(30000);    
     process.setInheritHandle(true);
+    process.setSecurityInheritHandle(true);
+    process.usePipes(true);
+
+    process.setCurrentDir(workDir);
     process.start(L"",progPath+L" "+parms);
 
     Bi::ulong error;
