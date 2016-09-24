@@ -1,5 +1,5 @@
 #ifdef _MSC_VER
-  #pragma once
+#pragma once
 #endif
 // ---------------------------------------------------------------------------
 #ifndef ProcessH

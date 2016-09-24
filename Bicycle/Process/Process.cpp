@@ -141,12 +141,12 @@ void Process::start(const tstring& appName,
 void Process::createProcess()
 {
   tstring envStr =
-        environment_.empty()
-        ? tstring()
-        : environment_.toEnvironmentString();
+      environment_.empty()
+      ? tstring()
+      : environment_.toEnvironmentString();
 
 #ifdef UNICODE
-    creationFlags_ |= CREATE_UNICODE_ENVIRONMENT;
+  creationFlags_ |= CREATE_UNICODE_ENVIRONMENT;
 #endif
 
   started_=
@@ -171,10 +171,10 @@ void Process::waitForInputIdle(ulong msecs,ulong* errorCode)
   ulong waitResult= WaitForInputIdle(processInfo_.hProcess,msecs);
   switch(waitResult)
   {
-    case 0:            error= ProcessError::Success;     break;
-    case WAIT_TIMEOUT: error= ProcessError::WaitTimeOut; break;
-    case WAIT_FAILED:  error= GetLastError();            break;
-    default: break;
+  case 0:            error= ProcessError::Success;     break;
+  case WAIT_TIMEOUT: error= ProcessError::WaitTimeOut; break;
+  case WAIT_FAILED:  error= GetLastError();            break;
+  default: break;
   }
 
   if(errorCode)
@@ -189,10 +189,10 @@ void Process::waitForFinished(ulong msecs,ulong* errorCode)
   ulong waitResult= WaitForSingleObject(processInfo_.hProcess, msecs);
   switch(waitResult)
   {
-    case 0:            error= ProcessError::Success;     break;
-    case WAIT_TIMEOUT: error= ProcessError::WaitTimeOut; break;
-    case WAIT_FAILED:  error= GetLastError();            break;
-    default: break;
+  case 0:            error= ProcessError::Success;     break;
+  case WAIT_TIMEOUT: error= ProcessError::WaitTimeOut; break;
+  case WAIT_FAILED:  error= GetLastError();            break;
+  default: break;
   }
 
   if(errorCode)
@@ -230,7 +230,7 @@ void Process::setInheritHandle(bool inheritHandle)
 //---------------------------------------------------------------------------
 void Process::setSecurityInheritHandle(bool inheritHandle)
 {
-   security_.bInheritHandle= inheritHandle;
+  security_.bInheritHandle= inheritHandle;
 }
 //---------------------------------------------------------------------------
 void Process::setShowWindow(unsigned short showWindow)
@@ -275,7 +275,7 @@ ulong Process::creationFlags()const
 //---------------------------------------------------------------------------
 ulong Process::priority() const
 {
-   return priority_;
+  return priority_;
 }
 //---------------------------------------------------------------------------
 void Process::setStartupInfoFlags(ulong flags)

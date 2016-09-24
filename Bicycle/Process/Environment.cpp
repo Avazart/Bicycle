@@ -4,26 +4,26 @@ using namespace Bicycle;
 //---------------------------------------------------------------------
 tstring ProcessEnvironment::variable(const tstring &name)
 {
-   tstring value(4096,0);
+  tstring value(4096,0);
 
-   ulong size = GetEnvironmentVariable(name.c_str(),&value[0],value.size());
-   if(size && size>value.size())
-   {
-     value.resize(size);
-     size = GetEnvironmentVariable(name.c_str(),&value[0],value.size());
-   }
+  ulong size = GetEnvironmentVariable(name.c_str(),&value[0],value.size());
+  if(size && size>value.size())
+  {
+    value.resize(size);
+    size = GetEnvironmentVariable(name.c_str(),&value[0],value.size());
+  }
 
-   if(size==0)
-   {
-     ulong errorCode= GetLastError();
-     if(errorCode= ERROR_ENVVAR_NOT_FOUND)
-     {
-       return tstring();
-     }
-     throw SystemException(errorCode);
-   }
-   value.resize(size);
-   return value;
+  if(size==0)
+  {
+    ulong errorCode= GetLastError();
+    if(errorCode= ERROR_ENVVAR_NOT_FOUND)
+    {
+      return tstring();
+    }
+    throw SystemException(errorCode);
+  }
+  value.resize(size);
+  return value;
 }
 //---------------------------------------------------------------------
 void ProcessEnvironment::setVariable(const tstring &name, const tstring& value)
@@ -36,23 +36,23 @@ void ProcessEnvironment::setVariable(const tstring &name, const tstring& value)
 //---------------------------------------------------------------------
 Strings ProcessEnvironment::strings()
 {
-   LPTCH lpvEnv= GetEnvironmentStrings();
-   if(!lpvEnv)
-   {
-      throw SystemException();
-   }
+  LPTCH lpvEnv= GetEnvironmentStrings();
+  if(!lpvEnv)
+  {
+    throw SystemException();
+  }
 
-   LPTSTR lpszVariable= (LPTSTR)lpvEnv;
-   Strings strings_;
+  LPTSTR lpszVariable= (LPTSTR)lpvEnv;
+  Strings strings_;
 
-   while(*lpszVariable)
-   {
-     strings_.push_back(lpszVariable);
-     lpszVariable += lstrlen(lpszVariable) + 1;
-   }
+  while(*lpszVariable)
+  {
+    strings_.push_back(lpszVariable);
+    lpszVariable += lstrlen(lpszVariable) + 1;
+  }
 
-   FreeEnvironmentStrings(lpvEnv);
-   return strings_;
+  FreeEnvironmentStrings(lpvEnv);
+  return strings_;
 }
 //---------------------------------------------------------------------
 //  Environment
@@ -117,24 +117,24 @@ void Environment::removeVariable(const tstring &name)
 //---------------------------------------------------------------------
 tstring Environment::variable(const tstring &name) const
 {
-   std::size_t index = indexOfName(name);
-   if(index!=npos)
-     return strings_[index].substr(name.size()+1);
-   return tstring();
+  std::size_t index = indexOfName(name);
+  if(index!=npos)
+    return strings_[index].substr(name.size()+1);
+  return tstring();
 }
 //---------------------------------------------------------------------
 void Environment::setVariable(std::size_t rowIndex, const tstring &value)
 {
-   std::size_t del_pos = strings_[rowIndex].find(TEXT("="));
-   if(del_pos!=tstring::npos)
-   {
-     strings_[rowIndex].erase(del_pos+1,strings_[rowIndex].size()-del_pos-1);
-     strings_[rowIndex].append(value);
-   }
-   else
-   {
-     strings_[rowIndex].append(TEXT("=")+value);
-   }
+  std::size_t del_pos = strings_[rowIndex].find(TEXT("="));
+  if(del_pos!=tstring::npos)
+  {
+    strings_[rowIndex].erase(del_pos+1,strings_[rowIndex].size()-del_pos-1);
+    strings_[rowIndex].append(value);
+  }
+  else
+  {
+    strings_[rowIndex].append(TEXT("=")+value);
+  }
 }
 //---------------------------------------------------------------------
 void Environment::setVariable(const tstring &name, const tstring &value)
