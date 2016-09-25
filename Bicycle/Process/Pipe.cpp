@@ -263,7 +263,8 @@ ulong PipeReader::read(char* data, ulong size, ulong& errorCode)
 /*                          PipeWriter                                     */
 //---------------------------------------------------------------------------
 PipeWriter::PipeWriter(ServerPipe* pipe)
-  :pipe_(pipe),timeOut_(INFINITE)
+  :pipe_(pipe),
+   timeOut_(INFINITE)
 {
 }
 //---------------------------------------------------------------------------

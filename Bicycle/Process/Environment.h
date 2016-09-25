@@ -1,4 +1,4 @@
-#if defined(_MSC_VER)
+#ifdef _MSC_VER
 	#pragma once
 #endif
 //---------------------------------------------------------------------------
@@ -54,11 +54,11 @@ private:
 // ---------------------------------------------------------------------------
 namespace ProcessEnvironment
 {
-tstring variable(const tstring& name);
-void setVariable(const tstring& name,const tstring& value);
-Strings strings();
+  tstring variable(const tstring& name);
+  void setVariable(const tstring& name,const tstring& value);
+  Strings strings();
 
-Environment environment();
+  Environment environment();
 }
 // ---------------------------------------------------------------------------
 }
