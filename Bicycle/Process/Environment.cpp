@@ -1,6 +1,40 @@
 #include "Environment.h"
+#include <algorithm>
+#include "Algorithm/Mismatch.h"
 //---------------------------------------------------------------------
 using namespace Bicycle;
+//---------------------------------------------------------------------
+template<typename CharT>
+struct CaseInsensitiveCmp
+{
+   bool operator()(CharT c1,CharT c2) const
+   {
+      return toupper(c1)==toupper(c2);
+   }
+};
+//---------------------------------------------------------------------
+template<typename StringT>
+struct ContainsKey
+{
+  ContainsKey(const StringT& keyName)
+    :keyName_(keyName)
+  {
+  }
+
+  bool operator()(const StringT& line) const
+  {
+   std::pair<StringT::const_iterator,StringT::const_iterator> p=
+   // C++14 std::mismatch
+       Bicycle::mismatch( line.begin(), line.end(),
+                          keyName_.begin(), keyName_.end(),
+                          CaseInsensitiveCmp<typename StringT::value_type>() );
+
+    return p.second==keyName_.end() && p.first!=line.end() && *p.first==TEXT('=');
+  }
+
+  private:
+    StringT keyName_;
+};
 //---------------------------------------------------------------------
 tstring ProcessEnvironment::variable(const tstring &name)
 {
@@ -73,12 +107,12 @@ bool Environment::empty() const
 //---------------------------------------------------------------------
 std::size_t Environment::indexOfName(const tstring& name) const
 {
-  for(std::size_t i=0; i<strings_.size(); ++i)
-  {
-    if(strings_[i].find(name+TEXT("="))==0)
-      return i;
-  }
-  return npos;
+ Strings::const_iterator i=
+     std::find_if(strings_.begin(),strings_.end(),ContainsKey<tstring>(name));
+
+  return i==strings_.end()
+         ? npos
+         : std::distance(strings_.begin(),i);
 }
 //---------------------------------------------------------------------
 bool Environment::exists(const tstring &name) const
