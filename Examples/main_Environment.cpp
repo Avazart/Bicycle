@@ -3,6 +3,10 @@
 #include "Process/Process.h"
 #include "Process/Environment.h"
 
+#include "Algorithm/Split.h"
+#include "Algorithm/Trim.h"
+#include "Algorithm/IsAnyOf.h"
+
 #include "Console.h"
 #include "IOStream.h"
 
@@ -56,9 +60,25 @@ int main(int argc, char* [])
       process.setCmdLine(appFilePath()+ L" -arg");
       process.start();
 
+      Bi::Console::setTextAttr(Bi::ConsoleColor::blue);
       wcout<< endl<< L"Create children process..."<< endl;
       process.waitForFinished();
-      wcout<<"Children process finished."<<endl;
+      wcout<<"Children process finished with exit code: "<< process.exitCode()<<endl;
+
+
+      // Example how use Bi::split() and Bi::trim()
+      Bi::Console::setTextAttr(Bi::ConsoleColor::yellow);
+      wcout<<endl<<L"PATH:"<<endl;
+      Bi::tstring path_variable= env.variable(L"PATH");
+
+      // split string by ";"
+      Bi::Strings values;
+      Bi::split(values,path_variable,Bi::is_any_of(L";"));
+
+      for(size_t i=0; i<values.size(); ++i)
+        wcout<< // trim separator '/' in end path
+               Bi::trim_right_copy_if(values[i],Bi::is_any_of(L"/\\"))
+             <<endl;
     }
   }
   catch (const Bi::SystemException& e)

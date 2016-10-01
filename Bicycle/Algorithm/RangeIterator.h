@@ -3,6 +3,7 @@
 #define RangeIteratorH
 // ---------------------------------------------------------------------------
 #include "RangeMutableIterator.h"
+#include "RangeConstIterator.h"
 // ---------------------------------------------------------------------------
 namespace Bicycle
 {
