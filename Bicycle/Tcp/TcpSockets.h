@@ -13,20 +13,20 @@
 //---------------------------------------------------------------------------
 namespace Bicycle
 {
-  namespace Wsa
-  {
-    void startup();
-    void cleanup(bool nonThrow= false);
-  }
+namespace Wsa
+{
+void startup();
+void cleanup(bool nonThrow= false);
+}
 
-	struct SocketError
-	{
-			enum:ulong
-			{
-				Success= ERROR_SUCCESS,
-				WsaTimeOut= WSAETIMEDOUT,  // 10060 Connection timed out.
-			};
-	};
+struct SocketError
+{
+  enum:ulong
+    {
+    Success= ERROR_SUCCESS,
+    WsaTimeOut= WSAETIMEDOUT,  // 10060 Connection timed out.
+    };
+};
 }
 //---------------------------------------------------------------------------
 #endif

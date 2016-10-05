@@ -5,5 +5,6 @@ SUBDIRS += \
     TestSerial \
     TestTcpClient \
     TestTcpServer \
-    TestEnvironment
+    TestEnvironment \
+    TestFormat
 

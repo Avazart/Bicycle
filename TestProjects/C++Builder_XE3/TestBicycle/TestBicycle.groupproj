@@ -18,6 +18,9 @@
         <Projects Include="TestEnvironment\TestEnvironment.cbproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="TestFormat\TestFormat.cbproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -71,14 +74,23 @@
     <Target Name="TestEnvironment:Make">
         <MSBuild Projects="TestEnvironment\TestEnvironment.cbproj" Targets="Make"/>
     </Target>
+    <Target Name="TestFormat">
+        <MSBuild Projects="TestFormat\TestFormat.cbproj"/>
+    </Target>
+    <Target Name="TestFormat:Clean">
+        <MSBuild Projects="TestFormat\TestFormat.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TestFormat:Make">
+        <MSBuild Projects="TestFormat\TestFormat.cbproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="TestProcess;TestSerial;TestTcpClient;TestTcpServer;TestEnvironment"/>
+        <CallTarget Targets="TestProcess;TestSerial;TestTcpClient;TestTcpServer;TestEnvironment;TestFormat"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="TestProcess:Clean;TestSerial:Clean;TestTcpClient:Clean;TestTcpServer:Clean;TestEnvironment:Clean"/>
+        <CallTarget Targets="TestProcess:Clean;TestSerial:Clean;TestTcpClient:Clean;TestTcpServer:Clean;TestEnvironment:Clean;TestFormat:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="TestProcess:Make;TestSerial:Make;TestTcpClient:Make;TestTcpServer:Make;TestEnvironment:Make"/>
+        <CallTarget Targets="TestProcess:Make;TestSerial:Make;TestTcpClient:Make;TestTcpServer:Make;TestEnvironment:Make;TestFormat:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

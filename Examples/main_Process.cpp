@@ -9,8 +9,8 @@ int main()
   using namespace std;
   namespace Bi= Bicycle;
 
-	Bi::Console::setTextAttr(Bi::ConsoleColor::lime);
-	try
+  Bi::Console::setTextAttr(Bi::ConsoleColor::lime);
+  try
   {
     Bi::Process process;
 
@@ -18,7 +18,7 @@ int main()
     wstring parms= L"google.com";
     wstring workDir= L".";
 
-    process.setReadTimeOut(30000);    
+    process.setReadTimeOut(30000);
     process.setInheritHandle(true);
     process.setSecurityInheritHandle(true);
     process.usePipes(true);

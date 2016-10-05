@@ -28,39 +28,39 @@ ulong TcpClient::write(const char* data, ulong size, ulong& errorCode)
 // ---------------------------------------------------------------------------
 void TcpClient::checkErrorCode(ulong code) const
 {
-   if(code!=SocketError::Success)
-       throw SocketException(code);
+  if(code!=SocketError::Success)
+    throw SocketException(code);
 }
 //----------------------- TcpClient -----------------------------------------
 TcpClient::TcpClient()
-	: socket_(INVALID_SOCKET),
-		hostent_(0),
+  : socket_(INVALID_SOCKET),
+    hostent_(0),
     timeOut_(DEFAULT_TIMEOUT)
 {
-	addr_.sin_family= AF_INET;
-	socket_= ::socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
-	if(socket_==INVALID_SOCKET)
-		throw SocketException();
+  addr_.sin_family= AF_INET;
+  socket_= ::socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
+  if(socket_==INVALID_SOCKET)
+    throw SocketException();
 }
 //---------------------------------------------------------------------------
 TcpClient::TcpClient(SOCKET socket)
-	:socket_(socket),
-	 hostent_(0),
-   timeOut_(0)
+  :socket_(socket),
+    hostent_(0),
+    timeOut_(0)
 {
-	if(socket_==INVALID_SOCKET)
-		throw Bicycle::SocketException();
+  if(socket_==INVALID_SOCKET)
+    throw Bicycle::SocketException();
 }
 //---------------------------------------------------------------------------
 TcpClient::~TcpClient()
 {
-	close(true);
+  close(true);
 }
 //---------------------------------------------------------------------------
 void TcpClient::connect(const std::string& addr,unsigned short port)
 {
-	setPort(port);
-	setAddr(addr);
+  setPort(port);
+  setAddr(addr);
   TcpClient::connect();
 }
 //---------------------------------------------------------------------------
@@ -69,9 +69,9 @@ void TcpClient::connect()
   if(::connect(socket_,
                (sockaddr*)&addr_,
                sizeof(addr_)) == SOCKET_ERROR)
-	{
+  {
     throw SocketException();
-	}
+  }
 
   if(timeOut_==INFINITE)
     return;
@@ -93,24 +93,24 @@ void TcpClient::connect()
 //---------------------------------------------------------------------------
 void TcpClient::close(bool nonThrow)
 {
-	if(shutdown(socket_,SD_BOTH)==SOCKET_ERROR && !nonThrow)
-	{
-		throw SocketException();
-	}
-	if(closesocket(socket_)==SOCKET_ERROR && !nonThrow)
-	{
-		throw SocketException();
-	}
+  if(shutdown(socket_,SD_BOTH)==SOCKET_ERROR && !nonThrow)
+  {
+    throw SocketException();
+  }
+  if(closesocket(socket_)==SOCKET_ERROR && !nonThrow)
+  {
+    throw SocketException();
+  }
 }
 //---------------------------------------------------------------------------
 std::string TcpClient::host()const
 {
-	return hostent_?hostent_->h_name:"";
+  return hostent_?hostent_->h_name:"";
 }
 //---------------------------------------------------------------------------
 std::string TcpClient::ip()  const
 {
-	return inet_ntoa(addr_.sin_addr);
+  return inet_ntoa(addr_.sin_addr);
 }
 //---------------------------------------------------------------------------
 unsigned short TcpClient::port() const
@@ -150,7 +150,7 @@ void TcpClient::setTimeOut(ulong timeOut)
 //---------------------------------------------------------------------------
 void TcpClient::setPort(unsigned short port)
 {
-	addr_.sin_port= htons(port);
+  addr_.sin_port= htons(port);
 }
 //---------------------------------------------------------------------------
 void TcpClient::setAddr(const std::string& addr)
@@ -159,13 +159,13 @@ void TcpClient::setAddr(const std::string& addr)
     addr_.sin_addr.s_addr= inet_addr(addr.c_str());
   else
   {
-		hostent_= gethostbyname(addr.c_str());
-		if(hostent_)
+    hostent_= gethostbyname(addr.c_str());
+    if(hostent_)
     {
       memcpy(&addr_.sin_addr, hostent_->h_addr_list[0], hostent_->h_length);
     }
     else
-		{
+    {
       throw SocketException();
     }
   }

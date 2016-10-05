@@ -12,17 +12,17 @@ SocketException::SocketException()
   :std::exception()
 {
   code_= WSAGetLastError();
-	message_= formatMessage(code_);
+  message_= formatMessage(code_);
 }
 //---------------------------------------------------------------------------
 SocketException::SocketException( const ulong errorCode,
                                   const std::string& prefix)
   : code_(errorCode),
-#ifdef USE_ERROR_PREFIX
+    #ifdef USE_ERROR_PREFIX
     message_(prefix+formatMessage(errorCode))
-#else
-		message_(formatMessage(errorCode))
-#endif
+  #else
+    message_(formatMessage(errorCode))
+  #endif
 {
 }
 //---------------------------------------------------------------------------
@@ -30,9 +30,9 @@ SocketException::SocketException(const std::string& prefix)
 {
   code_= GetLastError();
 #ifdef USE_ERROR_PREFIX
-	message_= prefix+formatMessage(code_);
+  message_= prefix+formatMessage(code_);
 #else
-	message_= formatMessage(code_);
+  message_= formatMessage(code_);
 #endif
 }
 //---------------------------------------------------------------------------
@@ -48,7 +48,7 @@ const std::string SocketException::message() const
 //---------------------------------------------------------------------------
 const std::string SocketException::systemMessage() const
 {
-	return Bicycle::formatMessage(code_);
+  return Bicycle::formatMessage(code_);
 }
 //---------------------------------------------------------------------------
 const ulong SocketException::code() const
