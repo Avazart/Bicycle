@@ -70,15 +70,11 @@ floatToString(FloatT value,
               CharT fillChar=' ')
 {
   std::basic_stringstream<CharT> ss;
-  if(format=='d') // default
-    ss.unsetf(std::ios_base::floatfield);
-  else
-  {
-    if(format=='f')
-      ss.setf(std::ios_base::fixed);
-    if(format=='s')
-      ss.setf(std::ios_base::scientific);
-  }
+
+  if(format=='f')
+    ss.setf(std::ios_base::fixed);
+  else if(format=='s')
+    ss.setf(std::ios_base::scientific);
 
   ss << std::setw(fieldWidth)
      << std::setprecision(precision)
@@ -86,6 +82,15 @@ floatToString(FloatT value,
      << value;
   return ss.str();
 }
+//--------------------------------------------------------------------------------
+template<typename CharT>
+class Format;
+
+template< typename CharT>
+Format<CharT> format(const std::basic_string<CharT>& str,std::size_t n=0);
+
+template< typename CharT>
+Format<CharT> format(const CharT* str,std::size_t n=0);
 //------------------------------- Format -----------------------------------------
 template<typename CharT>
 class Format
@@ -93,14 +98,9 @@ class Format
 public:
   typedef std::basic_string<CharT> StringT;
 
-// Not working in C++Builder XE3 :
-/*
-  template< typename T>
-  friend Format<T> format(const std::basic_string<T>& str,std::size_t n);
-
-  template< typename T>
-  friend Format<T> format(const T* str,std::size_t n);
-*/
+  // format
+  friend Format format<CharT>(const StringT& str, std::size_t n);
+  friend Format format<CharT>(const CharT* str, std::size_t n);
 
   // String
   Format arg(const StringT& a);
@@ -130,7 +130,7 @@ public:
   operator StringT() const;
   ~Format();
 
-// private:
+private:
   Format(const StringT& str, std::size_t firstArgNumber=0);
   Format(const Format& f);
   Format& operator==(const Format& f);
@@ -142,13 +142,13 @@ private:
 };
 //----------------------- friend format() -----------------------------------------
 template< typename CharT>
-Format<CharT> format(const std::basic_string<CharT>& str,std::size_t n=0)
+Format<CharT> format(const std::basic_string<CharT>& str,std::size_t n)
 {
   return Format<CharT>(str,n);
 }
 //---------------------------------------------------------------------------------
 template< typename CharT>
-Format<CharT> format(const CharT* c_str,std::size_t n=0)
+Format<CharT> format(const CharT* c_str,std::size_t n)
 {
   return Format<CharT>(c_str,n);
 }
