@@ -91,7 +91,7 @@ class Format;
 template< typename CharT>
 Format<CharT> format(const std::basic_string<CharT>& str,std::size_t n=0);
 
-template< typename CharT>
+template<typename CharT>
 Format<CharT> format(const CharT* str,std::size_t n=0);
 //------------------------------- Format -----------------------------------------
 template<typename CharT>
@@ -130,7 +130,7 @@ public:
   Format& arg(long double a, int fieldWidth = 0, char format = 'd', int precision = -1, CharT fillChar=' ');
 
   // %
-  Format& operator%(const StringT& a);
+	Format& operator%(const StringT& a);
 
   template<typename T>
   Format& operator%(T a);
@@ -138,23 +138,24 @@ public:
   operator StringT() const;
 
 private:
-  Format(const StringT& str, std::size_t firstArgNumber=0);
+	Format(const StringT& str, std::size_t firstArgNumber=0);
+	Format(const Format& f);
 
 private:
-  StringT str_;
-  std::size_t argNumber_;
+	StringT str_;
+	std::size_t argNumber_;
 };
 //----------------------- friend format() -----------------------------------------
 template< typename CharT>
 Format<CharT> format(const std::basic_string<CharT>& str,std::size_t n)
 {
-  return Format<CharT>(str,n);
+	return Format<CharT>(str,n);
 }
 //---------------------------------------------------------------------------------
 template< typename CharT>
 Format<CharT> format(const CharT* c_str,std::size_t n)
 {
-  return Format<CharT>(c_str,n);
+	return Format<CharT>(c_str,n);
 }
 //-------------------------- String ------------------------------------------------
 template<typename CharT>
@@ -286,10 +287,17 @@ Format<CharT>::operator StringT() const
 //---------------------------------------------------------------------------
 template<typename CharT>
 Format<CharT>::Format(const typename Format<CharT>::StringT &str,
-                      size_t firstArgNumber)
-  : str_(str),
-    argNumber_(firstArgNumber)
+											size_t firstArgNumber)
+	: str_(str),
+		argNumber_(firstArgNumber)
 {
+}
+//---------------------------------------------------------------------------
+template<typename CharT>
+Format<CharT>::Format(const Format& f)
+{
+	str_= f.str_;
+	argNumber_= f.argNumber_;
 }
 //---------------------------------------------------------------------------
 } // Bicycle

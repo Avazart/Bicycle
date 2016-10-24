@@ -9,18 +9,6 @@ BICYCLE_DIR =  ../../../../Bicycle
 
 INCLUDEPATH+= $${BICYCLE_DIR}
 
-SOURCES += $${EXAMPLES_DIR}/main_Environment.cpp \
-    $${BICYCLE_DIR}/Process/Pipe.cpp \
-    $${BICYCLE_DIR}/Process/Process.cpp \
-    $${BICYCLE_DIR}/Process/Environment.cpp \
-    $${BICYCLE_DIR}/Buffer.cpp \
-    $${BICYCLE_DIR}/Console.cpp \
-    $${BICYCLE_DIR}/Global.cpp \
-    $${BICYCLE_DIR}/IODevice.cpp \
-    $${BICYCLE_DIR}/IOStream.cpp \
-    $${BICYCLE_DIR}/NonCopyable.cpp \
-    $${BICYCLE_DIR}/SystemException.cpp
-
 HEADERS += \
     $${BICYCLE_DIR}/Process/Pipe.h \
     $${BICYCLE_DIR}/Process/Process.h \
@@ -32,6 +20,16 @@ HEADERS += \
     $${BICYCLE_DIR}/IOStream.h \
     $${BICYCLE_DIR}/NonCopyable.h \
     $${BICYCLE_DIR}/SystemException.h
+
+SOURCES += $${EXAMPLES_DIR}/main_Environment.cpp \
+    $${BICYCLE_DIR}/Process/Pipe.cpp \
+    $${BICYCLE_DIR}/Process/Process.cpp \
+    $${BICYCLE_DIR}/Process/Environment.cpp \
+    $${BICYCLE_DIR}/Buffer.cpp \
+    $${BICYCLE_DIR}/Console.cpp \
+    $${BICYCLE_DIR}/Global.cpp \
+    $${BICYCLE_DIR}/IOStream.cpp \
+    $${BICYCLE_DIR}/SystemException.cpp
 
 LIBS += User32.lib
 

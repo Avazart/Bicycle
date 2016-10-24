@@ -1,5 +1,7 @@
 //---------------------------------------------------------------------------
-#pragma once
+#ifdef _MSC_VER
+  #pragma once
+#endif
 //---------------------------------------------------------------------------
 #ifndef ConsoleH
 #define ConsoleH
@@ -12,6 +14,7 @@ namespace Bicycle
 class ConsoleColor
 {
 public:
+
 enum:
   uchar
   {
@@ -37,6 +40,7 @@ enum:
   ConsoleColor(const std::string& name);
   uchar value()const;
   std::string name()const;
+
 private:
   uchar value_;
 };
@@ -63,6 +67,7 @@ public:
                    ulong* filled=0);
 
   static bool setCursorPos(short x,short y);
+  static COORD cursorPos();
 
 protected:
   static bool clear(HANDLE console);
@@ -73,9 +78,8 @@ protected:
                                          ulong   length,
                                          COORD   writeCoord,
                                          ulong*  numberOfAttrsWritten);
-
-  static COORD cursorPos();
 };
-}
+//---------------------------------------------------------------------------
+} // Bicycle
 //---------------------------------------------------------------------------
 #endif

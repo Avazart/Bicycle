@@ -1,9 +1,8 @@
 //---------------------------------------------------------------------------
 #include "SystemException.h"
 //---------------------------------------------------------------------------
-
+#define BI_USE_ERROR_PREFIX
 //---------------------------------------------------------------------------
-#define USE_ERROR_PREFIX
 using namespace Bicycle;
 //---------------------------------------------------------------------------
 	SystemException::SystemException()
@@ -16,7 +15,7 @@ using namespace Bicycle;
 SystemException::SystemException( ulong errorCode,
 																	const std::string& prefix)
 	: code_(errorCode),
-		#ifdef USE_ERROR_PREFIX
+    #ifdef BI_USE_ERROR_PREFIX
 			message_(prefix+formatMessage(errorCode))
 		#else
 			message_(formatMessage(errorCode))
@@ -27,7 +26,7 @@ SystemException::SystemException( ulong errorCode,
 SystemException::SystemException(const std::string& prefix)
 {
 	code_= GetLastError();
-	#ifdef USE_ERROR_PREFIX
+  #ifdef BI_USE_ERROR_PREFIX
 		 message_= prefix+formatMessage(code_);
 	#else
 		 message_= formatMessage(code_);

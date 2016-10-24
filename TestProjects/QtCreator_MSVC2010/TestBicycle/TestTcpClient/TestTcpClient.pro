@@ -8,18 +8,6 @@ BICYCLE_DIR =  ../../../../Bicycle
 
 INCLUDEPATH+= $${BICYCLE_DIR}
 
-
-SOURCES += $${EXAMPLES_DIR}/main_TcpClient.cpp \
-    $${BICYCLE_DIR}/Tcp/SocketException.cpp \
-    $${BICYCLE_DIR}/Tcp/TcpClient.cpp \
-    $${BICYCLE_DIR}/Tcp/TcpSockets.cpp \
-    $${BICYCLE_DIR}/Buffer.cpp \
-    $${BICYCLE_DIR}/Global.cpp \
-    $${BICYCLE_DIR}/IODevice.cpp \
-    $${BICYCLE_DIR}/IOStream.cpp \
-    $${BICYCLE_DIR}/NonCopyable.cpp \
-    $${BICYCLE_DIR}/SystemException.cpp \
-
 HEADERS += \
     $${BICYCLE_DIR}/Tcp/SocketException.h \
     $${BICYCLE_DIR}/Tcp/TcpClient.h \
@@ -30,6 +18,16 @@ HEADERS += \
     $${BICYCLE_DIR}/IOStream.h \
     $${BICYCLE_DIR}/NonCopyable.h \
     $${BICYCLE_DIR}/SystemException.h
+
+
+SOURCES += $${EXAMPLES_DIR}/main_TcpClient.cpp \
+    $${BICYCLE_DIR}/Tcp/SocketException.cpp \
+    $${BICYCLE_DIR}/Tcp/TcpClient.cpp \
+    $${BICYCLE_DIR}/Tcp/TcpSockets.cpp \
+    $${BICYCLE_DIR}/Buffer.cpp \
+    $${BICYCLE_DIR}/Global.cpp \
+    $${BICYCLE_DIR}/IOStream.cpp \
+    $${BICYCLE_DIR}/SystemException.cpp \
 
 LIBS += Ws2_32.lib
 

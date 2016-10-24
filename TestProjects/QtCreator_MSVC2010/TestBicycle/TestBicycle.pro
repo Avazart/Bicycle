@@ -6,5 +6,9 @@ SUBDIRS += \
     TestTcpClient \
     TestTcpServer \
     TestEnvironment \
-    TestFormat
+    TestFormat \
+    TestAny \
+    TestLibrary \
+    TestVolume \
+    TestPath
 

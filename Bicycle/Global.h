@@ -21,16 +21,20 @@
 #include <windows.h>
 #include <tchar.h>
 #include <string>
+#include <vector>
 //---------------------------------------------------------------------------
 namespace Bicycle
 {
   typedef wchar_t tchar;
   typedef std::basic_string<tchar> tstring;
+  typedef std::basic_ostream<tchar> tostream;
 
   typedef WORD  ushort;
   typedef DWORD ulong;
   typedef UINT  uint;
   typedef unsigned char uchar;
+
+  typedef std::vector<tstring> Strings;
 
   extern const std::string CRLF; // "\r\n"
   extern const ulong DEFAULT_BUFF_SIZE; // 10 MB
@@ -45,5 +49,8 @@ namespace Bicycle
     Utf8= CP_UTF8/*= 65001*/
   };
 }
+
+//Bicycle::Strings& operator<<(Bicycle::Strings& strings,const  Bicycle::tstring& str);
+//Bicycle::tostream& operator<<(Bicycle::tostream& stream,const Bicycle::Strings& strings);
 //---------------------------------------------------------------------------
 #endif
