@@ -30,13 +30,13 @@ namespace Bicycle
   typedef std::basic_ostream<tchar> tostream;
 
   typedef WORD  ushort;
-  typedef DWORD ulong;
+	typedef DWORD ulong;
   typedef UINT  uint;
   typedef unsigned char uchar;
 
   typedef std::vector<tstring> Strings;
 
-  extern const std::string CRLF; // "\r\n"
+	extern const std::string CRLF; // "\r\n"
   extern const ulong DEFAULT_BUFF_SIZE; // 10 MB
   extern const ulong DEFAULT_TIMEOUT;   // INFINITE
 
@@ -47,9 +47,8 @@ namespace Bicycle
     OEM=  CP_OEMCP/*= 866*/,
     Win1251= 1251,
     Utf8= CP_UTF8/*= 65001*/
-  };
+	};
 }
-
 //Bicycle::Strings& operator<<(Bicycle::Strings& strings,const  Bicycle::tstring& str);
 //Bicycle::tostream& operator<<(Bicycle::tostream& stream,const Bicycle::Strings& strings);
 //---------------------------------------------------------------------------

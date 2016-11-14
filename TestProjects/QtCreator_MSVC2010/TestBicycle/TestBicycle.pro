@@ -10,5 +10,6 @@ SUBDIRS += \
     TestAny \
     TestLibrary \
     TestVolume \
-    TestPath
+    TestPath \
+    TestAlgorithm
 

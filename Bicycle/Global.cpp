@@ -22,6 +22,21 @@ std::string Bicycle::formatMessage(ulong code)
 
   return errorMsg;
 }
+////---------------------------------------------------------------------------
+//Bicycle::tstring Bicycle::join(const Bicycle::Strings& strings,
+//															 const Bicycle::tstring& sep)
+//{
+//	 using namespace Bicycle;
+//
+//	 if(strings.empty())
+//		 return tstring();
+//
+//	 tstring str =  strings[0];
+//	 for(std::size_t i=1; i<strings.size(); ++i)
+//		str+= sep+strings[i];
+//
+//	 return str;
+//}
 //---------------------------------------------------------------------------
 //Bicycle::Strings& operator<<(Bicycle::Strings &strings,
 //                             const Bicycle::tstring &str)

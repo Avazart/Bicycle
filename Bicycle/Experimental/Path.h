@@ -61,6 +61,9 @@ namespace Path
 
   tstring relativeTo(const tstring& from,const tstring& to);
 
+
+	bool createDir(const tstring& path);
+	bool removeDir(const tstring& path);
   // copyFile()
   // moveFile()
   // removeFile()

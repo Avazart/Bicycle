@@ -85,7 +85,7 @@ inline OutputIteratorT trim_left_copy_if(OutputIteratorT output,
       lit_range(as_literal(Input));
 
   std::copy(
-        trim_begin(begin(lit_range),end(lit_range), isSpace),
+        trim_begin(Bicycle::begin(lit_range),Bicycle::end(lit_range), isSpace),
         end(lit_range), output);
 
   return output;

@@ -7,6 +7,8 @@
 #include <Shlwapi.h>
 
 using namespace Bicycle;
+
+//#pragma comment(lib,"Shlwapi.lib") // PathIsRelative , ...
 // ----------------------------------------------------
 const tstring reservedCharset= TEXT("<>:\"/\\|?*");
 const tstring pathSeparators= TEXT("\\/");
@@ -148,18 +150,21 @@ size_t Path::entry(Strings& entries,
 // ----------------------------------------------------
 bool Path::exists(const tstring &path)
 {
-  return PathFileExists(path.c_str()) == TRUE;
+	return
+		(GetFileAttributes(path.c_str()) & INVALID_FILE_ATTRIBUTES) == 0;
+
+		//  return PathFileExists(path.c_str()) == TRUE;
 }
 // ----------------------------------------------------
 bool Path::isDir(const tstring &path)
 {
-  return (GetFileAttributes(path.c_str()) & FILE_ATTRIBUTE_DIRECTORY) != 0;
+	return (GetFileAttributes(path.c_str()) & FILE_ATTRIBUTE_DIRECTORY) != 0;
 }
 
 // ----------------------------------------------------
 bool Path::isRelative(const tstring &path)
 {
-  return PathIsRelative(path.c_str())== TRUE;
+	return PathIsRelative(path.c_str())== TRUE;
 }
 // ----------------------------------------------------
 bool Path::isSystemFolder(const tstring &path)
@@ -204,17 +209,28 @@ ulong Path::fileSize(const tstring &path)
 // ----------------------------------------------------
 tstring Path::relativeTo(const tstring &from, const tstring &to)
 {
-  tstring out(MAX_PATH,TEXT('\0'));
-  if(!PathRelativePathTo(&out[0],
-                     from.c_str(),
-                     FILE_ATTRIBUTE_DIRECTORY,
-                     to.c_str(),
-                     FILE_ATTRIBUTE_NORMAL))
-    throw SystemException("Path: ");
-  out.resize(out.find(TEXT('\0')));
-  return out;
+	tstring out(MAX_PATH,TEXT('\0'));
+	if(!PathRelativePathTo(&out[0],
+										 from.c_str(),
+										 FILE_ATTRIBUTE_DIRECTORY,
+										 to.c_str(),
+										 FILE_ATTRIBUTE_NORMAL))
+		throw SystemException("Path: ");
+	out.resize(out.find(TEXT('\0')));
+	return out;
 }
 // ----------------------------------------------------
+bool Path::createDir(const tstring& path)
+{
+	return CreateDirectory(path.c_str(),NULL)!=0;
+}
+// ----------------------------------------------------
+bool Path::removeDir(const tstring& path)
+{
+	return RemoveDirectory(path.c_str())!=0;
+}
+// ----------------------------------------------------
+
 
 
 

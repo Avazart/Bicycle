@@ -2,6 +2,7 @@
 #define SplitH
 //----------------------------------------------------------------------
 #include <algorithm>
+#include <iterator>
 
 #include "IteratorRange.h"
 #include "AsLiteral.h"
@@ -28,19 +29,19 @@ void split(OutT& out, const InT& in,
   while(cur != last)
   {
     if(IsSplitter(*cur))
-    {
-      if(!skip_empty_parts || first!= cur)
-        out.push_back(OutT::value_type(first,cur));
+		{
+			if(!skip_empty_parts || first!= cur)
+				out.push_back(OutT::value_type(first,cur));
 
-      first= ++cur;
-    }
-    else
-      ++cur;
-  }
-  if(!skip_empty_parts || first!= cur)
-    out.push_back(OutT::value_type(first,cur));
+			first= ++cur;
+		}
+		else
+			++cur;
+	}
+	if(!skip_empty_parts || first!= cur)
+		out.push_back(OutT::value_type(first,cur));
 }
 //----------------------------------------------------------------------
-}
+} // Bicycle ::
 //----------------------------------------------------------------------
 #endif

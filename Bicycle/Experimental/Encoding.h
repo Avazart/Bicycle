@@ -1,10 +1,11 @@
-#pragma ones
+#ifdef _MSC_VER
+  #pragma once
+#endif
 //---------------------------------------------------------------------------
 #ifndef EncodingH
 #define EncodingH
 //---------------------------------------------------------------------------
 #include "Global.h"
-#include <vector>
 //---------------------------------------------------------------------------
 namespace Bicycle
 {
@@ -12,7 +13,7 @@ namespace Bicycle
                      uint sourceCodePage,
                      uint targetCodePage);
 
-  std::vector<tstring> systemCodePages(ulong flags= CP_SUPPORTED); //CP_INSTALLED, CP_SUPPORTED
+  Strings systemCodePages(ulong flags= CP_SUPPORTED); //CP_INSTALLED // not thread-safe
 
   std::string  fromOEM(const std::string& in);
   std::string  fromUTF8(const std::string& in);

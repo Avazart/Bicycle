@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 #include "Encoding.h"
 //---------------------------------------------------------------------------
-static std::vector<Bicycle::tstring> codePages_;
+static Bicycle::Strings codePages_;
 //---------------------------------------------------------------------------
 BOOL CALLBACK enumCodePages(LPTSTR lpCodePageString)
 {
@@ -9,7 +9,7 @@ BOOL CALLBACK enumCodePages(LPTSTR lpCodePageString)
   return TRUE;
 }
 //---------------------------------------------------------------------------
-std::vector<Bicycle::tstring> Bicycle::systemCodePages(ulong flags)
+Bicycle::Strings Bicycle::systemCodePages(ulong flags)
 {
   codePages_.clear();
   EnumSystemCodePages(&enumCodePages,flags);

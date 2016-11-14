@@ -7,11 +7,12 @@
 //----------------------------------------------------------
 #include "../Global.h"
 #include "../SystemException.h"
+#include "../NonCopyable.h"
 //----------------------------------------------------------
 namespace Bicycle
 {
 //----------------------------------------------------------
-class Library
+class Library: private NonCopyable
 {
 public:
   explicit Library(const std::wstring& modulePath);

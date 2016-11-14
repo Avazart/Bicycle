@@ -44,7 +44,7 @@ public:
   // typedef iterator_difference<IteratorT>::type difference_type;
   typedef std::size_t size_type;
 
-  typedef iterator_range<IteratorT>this_type;
+  typedef iterator_range<IteratorT> this_type;
   // typedef iterator_reference<IteratorT>::type reference;
   typedef IteratorT const_iterator;
   typedef IteratorT iterator;
