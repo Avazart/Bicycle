@@ -24,49 +24,46 @@ int main()
 		if(Bi::SerialPortInfo::availablePorts(ports))
 		{
 			for(std::size_t i=0; i<ports.size(); ++i)
-				wcout<< ports[i].portName()   << endl
-						 << ports[i].hardwareIds()<< endl
-						 << hex << ports[i].parseId(L"vID_")<< endl
-						 << hex << ports[i].parseId(L"Prot_")<< endl
- 						 << hex << ports[i].parseId(L"MI_") << endl
-						 << ports[i].manufacturer()<< endl
-						 << ports[i].description()<< endl
-						 << ports[i].friendlyName()<< endl
-						 << ports[i].classGuid()<< endl
+        wcout<< L"port name: " << ports[i].portName()   << endl
+             << L"hardware ids: " << ports[i].hardwareIds()<< endl
+             << L"vid: "<<hex << ports[i].parseId(L"vid_")<< endl
+             << L"pid: "<<hex << ports[i].parseId(L"pid_")<< endl
+             << L"manufacturer:" <<ports[i].manufacturer()<< endl
+             << L"description: "<<ports[i].description()<< endl
+             << L"friendly name: "<<ports[i].friendlyName()<< endl
+             << L"class guid: "<<ports[i].classGuid()<< endl
 						 << endl;
 		}
 
-//		Bi::SerialPort serial;
-//		serial.setPortName(L"COM5");
-//		serial.setReadTimeOut(60000);
-//		serial.setBaudRate(CBR_9600);
-//		serial.open();
-//
-//		Bi::ulong error;
-//		Bi::IOStream stream(&serial);
-//
-//		stream.writeLine("AT+CUSD=1,\"2A192C3602\",15",error);
-//		do
-//		{
-//			string line;
-//			if(stream.readLine(line,error) != 0 )
-//			{
-//				cout<<"\""<<line<<"\""<<endl;
-//			}
-//		}
-//		while(!error);
-//
-//		if(error == Bi::SerialError::WaitTimeOut)
-//		{
-//			Bi::Console::setTextAttr(Bi::ConsoleColor::blue);
-//			cout<< "TimeOut!" <<endl;
-//		}
-//		else
-//		{
-//			Bi::Console::changeCp(1251);
-//			Bi::Console::setTextAttr(Bi::ConsoleColor::red);
-//			cout<< Bi::formatMessage(error)<<endl;
-//		}
+    Bi::SerialPort serial;
+    serial.setPortName(L"COM5");
+    serial.setReadTimeOut(60000);
+    serial.setBaudRate(CBR_9600);
+    serial.open();
+
+    Bi::ulong error;
+    Bi::IOStream stream(&serial);
+    do
+    {
+      string line;
+      if(stream.readLine(line,error) != 0 )
+      {
+        cout<<"\""<<line<<"\""<<endl;
+      }
+    }
+    while(!error);
+
+    if(error == Bi::SerialError::WaitTimeOut)
+    {
+      Bi::Console::setTextAttr(Bi::ConsoleColor::blue);
+      cout<< "TimeOut!" <<endl;
+    }
+    else
+    {
+      Bi::Console::changeCp(1251);
+      Bi::Console::setTextAttr(Bi::ConsoleColor::red);
+      cout<< Bi::formatMessage(error)<<endl;
+    }
 	}
 	catch(const Bi::SystemException& e)
 	{

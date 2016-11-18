@@ -73,6 +73,11 @@ namespace Path
 
   // appPath()
 
+  // bool hasPrefix(const tstring& path)
+  // void appendPrefix(tstring& path)
+  // bool quoted() / wrapped()
+  // void normolize(tstring& path)  // add prefix and quote
+
 } // Path
 // --------------------------------------------------------------------------
 } // Bicycle

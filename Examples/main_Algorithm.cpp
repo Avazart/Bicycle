@@ -86,6 +86,7 @@ int main()
   cout<<"Wrap tag \"html\""<<endl;
   wrap(text,"<",">");
   cout<< text <<endl;
+  cout<< "is wrapped: "<<boolalpha<< is_wrapped(text,"<",">")<<endl;
 
   cout<<"Unwrap tag \"html\"" <<endl;
   cout<< unwrap_copy(text,"<",">")<<endl;
@@ -96,6 +97,12 @@ int main()
   text= "FirstTextLast";
   cout<<"Starts with \"First\": "<< boolalpha << starts_with(text,"First") <<endl;
   cout<<"Ends with \"Last\": "    << boolalpha << ends_with(text,"Last")   <<endl;
+
+  cout<<"Starts with case insensetive \"first\": "<< boolalpha
+     << starts_with(text,"first",CaseInsensitiveCmp<char>()) <<endl;
+  cout<<"Ends with case insensetive \"last\": "<< boolalpha
+     << ends_with(text,"last",CaseInsensitiveCmp<char>()) <<endl;
+
   cout<< endl;
 
   std::vector<string> searched;

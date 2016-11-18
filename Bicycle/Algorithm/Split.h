@@ -19,12 +19,12 @@ void split(OutT& out, const InT& in,
            PredicateT IsSplitter,
            bool skip_empty_parts= false)
 {
-  iterator_range< typename range_const_iterator<InT>::type >
-      lit_range(as_literal(in));
+  typedef typename range_const_iterator<InT>::type in_iterator;
+  iterator_range<in_iterator> lit_range(as_literal(in));
 
-  range_const_iterator<InT>::type first= Bicycle::begin(lit_range);
-  range_const_iterator<InT>::type last=  Bicycle::end(lit_range);
-  range_const_iterator<InT>::type cur=   first;
+  in_iterator first= Bicycle::begin(lit_range);
+  in_iterator last=  Bicycle::end(lit_range);
+  in_iterator cur=   first;
 
   while(cur != last)
   {

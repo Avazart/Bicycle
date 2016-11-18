@@ -40,33 +40,6 @@ typename Container::value_type
   }
   return result;
 }
-
-
-//template<typename Element,
-//         template<typename > class Container,
-//         typename Splitter>
-//Element join(const Container<Element>& container,const Splitter& splitter)
-//{
-//  Container<Element>::const_iterator first=  container.begin();
-//  Container<Element>::const_iterator last=   container.end();
-
-//  if(first==last)
-//    return Element();
-
-//  iterator_range< typename range_const_iterator<Splitter>::type >
-//  lit_range(as_literal(splitter));
-
-//  range_const_iterator<Splitter>::type sp_first= Bicycle::begin(lit_range);
-//  range_const_iterator<Splitter>::type sp_last=  Bicycle::end(lit_range);
-
-//  Element result= *first;
-//  for(++first; first!=last; ++first)
-//  {
-//    std::copy(sp_first,sp_last,std::back_inserter(result));
-//    std::copy(first->begin(),first->end(),std::back_inserter(result));
-//  }
-//  return result;
-//}
 //----------------------------------------------------------------------
 }
 //----------------------------------------------------------------------
