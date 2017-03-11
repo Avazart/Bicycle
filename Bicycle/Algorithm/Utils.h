@@ -6,6 +6,7 @@
 #define UtilsH
 //---------------------------------------------------------------------------
 #include <locale>
+#include <functional>
 //---------------------------------------------------------------------------
 namespace Bicycle
 {
@@ -13,7 +14,7 @@ namespace Bicycle
 // is space
 //---------------------------------------------------------------------------
 template<typename T>
-class is_space
+class is_space: public std::unary_function<T, bool>
 {
 public:
   is_space(const std::locale& loc)

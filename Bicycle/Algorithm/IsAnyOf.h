@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <iterator>
 #include <vector>
+#include <functional>
 //-------------------------------------------------------------------------
 #include "Utils.h"
 #include "Begin.h"
@@ -15,7 +16,7 @@ namespace Bicycle
 // is_any_of
 //---------------------------------------------------------------------------
 	template<typename T>
-	class is_any_ofF
+  class is_any_ofF: public std::unary_function<T, bool>
 	{
 	public:
     typedef typename value_type<T>::type value_type;

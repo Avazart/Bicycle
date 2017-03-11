@@ -40,7 +40,9 @@ namespace Bicycle
   extern const ulong DEFAULT_BUFF_SIZE; // 10 MB
   extern const ulong DEFAULT_TIMEOUT;   // INFINITE
 
-  std::string formatMessage(ulong code); // error code description
+  std::string formatMessage(ulong code,const tstring& moduleName= tstring()); // error code description
+
+  tstring appModuleFileName();
 
   enum CodePage: uint
   {
@@ -49,7 +51,5 @@ namespace Bicycle
     Utf8= CP_UTF8/*= 65001*/
 	};
 }
-//Bicycle::Strings& operator<<(Bicycle::Strings& strings,const  Bicycle::tstring& str);
-//Bicycle::tostream& operator<<(Bicycle::tostream& stream,const Bicycle::Strings& strings);
 //---------------------------------------------------------------------------
 #endif

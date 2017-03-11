@@ -142,10 +142,15 @@ bool Console::setTextAttr(Color fg,Color bg)
     setTextAttribute(stdHandle(STD_OUTPUT_HANDLE),fg.value()|(bg.value()<<4));
 }
 //---------------------------------------------------------------------------
+bool Console::setCursorPos(const COORD& coord)
+{
+  return setCursorPosition(stdHandle(STD_OUTPUT_HANDLE),coord);
+}
+//---------------------------------------------------------------------------
 bool Console::setCursorPos(short x,short y)
 {
   COORD coord= {x,y};
-  return setCursorPosition(stdHandle(STD_OUTPUT_HANDLE),coord);
+  return setCursorPos(coord);
 }
 //---------------------------------------------------------------------------
 bool Console::fill(short x,short y,ulong length,

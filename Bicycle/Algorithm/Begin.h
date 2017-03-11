@@ -8,7 +8,7 @@ namespace Bicycle
 //  begin()
 // ---------------------------------------------------------------------------
 template<class C>
-typename C::iterator	begin(C& c)
+typename C::iterator begin(C& c)
 {
   return c.begin();
 }

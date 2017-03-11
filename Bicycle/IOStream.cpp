@@ -164,14 +164,14 @@ ulong IOStream::writeStr(const std::string& str,
 //---------------------------------------------------------------------------
 ulong IOStream::writeLn(const std::string& line,
                         const std::string& delemiter,
-                        ulong* errorCode)
+												ulong* errorCode)
 {
-  ulong error;
-  ulong length= writeLine(line,error,delemiter);
+	ulong error;
+	ulong length= writeLine(line,error,delemiter);
   if(errorCode)
-    *errorCode= error;
-  else
-    device_->checkErrorCode(error);
+		*errorCode= error;
+	else
+		device_->checkErrorCode(error);
   return length;
 }
 //---------------------------------------------------------------------------

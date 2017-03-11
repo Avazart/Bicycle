@@ -11,24 +11,72 @@ tstring genName()
   return tss.str();
 }
 //---------------------------------------------------------------------------
+/*             Abstract Pipe                                                */
+//---------------------------------------------------------------------------
+AbstractPipe::AbstractPipe(const tstring &name):
+    name_(name),
+    handle_(INVALID_HANDLE_VALUE)
+{
+}
+//---------------------------------------------------------------------------
+AbstractPipe::~AbstractPipe()
+{
+  close();
+}
+//---------------------------------------------------------------------------
+HANDLE AbstractPipe::handle() const
+{
+  return handle_;
+}
+//---------------------------------------------------------------------------
+bool AbstractPipe::isValide() const
+{
+  return handle_!=INVALID_HANDLE_VALUE;
+}
+//---------------------------------------------------------------------------
+void AbstractPipe::close()
+{
+  if(isValide())
+  {
+    CloseHandle(handle_);
+    handle_= INVALID_HANDLE_VALUE;
+  }
+}
+//---------------------------------------------------------------------------
+tstring AbstractPipe::name() const
+{
+  return name_;
+}
+//---------------------------------------------------------------------------
+void AbstractPipe::setName(const tstring &name)
+{
+  name_= name;
+}
+//---------------------------------------------------------------------------
+void AbstractPipe::checkErrorCode(ulong code) const
+{
+  if(code)
+		throw SystemException(code);
+}
+//---------------------------------------------------------------------------
 /*             Server Pipe                                                 */
 //---------------------------------------------------------------------------
 ServerPipe::ServerPipe(const tstring& name)
-  :NonCopyable(),
-    name_(name),
+  :AbstractPipe(name),
     pipeMode_(PIPE_TYPE_BYTE),
-    maxInstances_(1),
-    defaultTimeOut_(DEFAULT_TIMEOUT),
-    handle_(INVALID_HANDLE_VALUE)
+		maxInstances_(1),
+
+		bufferSize_(DEFAULT_BUFF_SIZE),
+		timeOut_(DEFAULT_TIMEOUT)
 {
-  if(name_.empty())
-    name_= genName();
+	if(name_.empty())
+		name_= genName();
 }
 //---------------------------------------------------------------------------
 /*virtual*/ServerPipe::~ServerPipe()
 {
   ulong ec;
-  disconnect(ec);
+	disconnect(ec);
   close();
 }
 //---------------------------------------------------------------------------
@@ -44,7 +92,7 @@ void ServerPipe::create()
                              maxInstances_,
                              bufferSize_,
                              bufferSize_,
-                             defaultTimeOut_,
+                             timeOut_,
                              &secAtt);
 
   if(handle_==INVALID_HANDLE_VALUE)
@@ -68,180 +116,56 @@ void ServerPipe::connect()
   }
 }
 //---------------------------------------------------------------------------
+void ServerPipe::disconnect(ulong& ec)
+{
+	if(isValide())
+	{
+		if(!DisconnectNamedPipe(handle_))
+			ec= GetLastError();
+	}
+}
+//---------------------------------------------------------------------------
 void ServerPipe::setOpenMode(ulong mode)
 {
-  openMode_= mode;
+	openMode_= mode;
 }
 //---------------------------------------------------------------------------
 void ServerPipe::setPipeMode(ulong mode)
 {
-  pipeMode_= mode;
-}
-//---------------------------------------------------------------------------
-OVERLAPPED& ServerPipe::overlapped()
-{
-  return overlapped_;
-}
-//---------------------------------------------------------------------------
-HANDLE ServerPipe::handle()const
-{
-  return handle_;
-}
-//---------------------------------------------------------------------------
-bool ServerPipe::isValide()const
-{
-  return handle_!=INVALID_HANDLE_VALUE;
-}
-//---------------------------------------------------------------------------
-void ServerPipe::disconnect(ulong& ec)
-{
-  if(isValide())
-  {
-    if(!DisconnectNamedPipe(handle_))
-      ec= GetLastError();
-  }
-}
-//---------------------------------------------------------------------------
-void ServerPipe::close()
-{
-  if(isValide())
-  {
-    CloseHandle(handle_);
-    handle_= INVALID_HANDLE_VALUE;
-  }
+	pipeMode_= mode;
 }
 //---------------------------------------------------------------------------
 void ServerPipe::setBufferSize(ulong size)
 {
-  bufferSize_= size;
+	bufferSize_= size;
 }
 //---------------------------------------------------------------------------
-tstring ServerPipe::name()const
-{
-  return name_;
-}
-//---------------------------------------------------------------------------
-/*                 Client Pipe                                             */
-//---------------------------------------------------------------------------
-ClientPipe::ClientPipe(const tstring& name)
-  :NonCopyable(),
-    name_(name),
-    desiredAccess_(GENERIC_READ),
-    sharedMode_(0),
-
-    flagsAndAttributes_(0),
-    handle_(INVALID_HANDLE_VALUE)
-{
-}
-//---------------------------------------------------------------------------
-/*virtual*/ClientPipe::~ClientPipe()
-{
-  close();
-}
-//---------------------------------------------------------------------------
-void ClientPipe::open()
-{
-  close();
-
-  SECURITY_ATTRIBUTES secAtt= { sizeof(SECURITY_ATTRIBUTES), 0,true};
-  handle_= CreateFile( name_.c_str(),
-                       desiredAccess_,
-                       0,
-                       &secAtt,
-                       OPEN_EXISTING,
-                       flagsAndAttributes_,
-                       NULL );
-  if(handle_==INVALID_HANDLE_VALUE)
-    throw SystemException("void ClientPipe::open() ");
-}
-//---------------------------------------------------------------------------
-void ClientPipe::setFlagsAndAttributes(ulong flagsAndAttr)
-{
-  flagsAndAttributes_= flagsAndAttr;
-}
-//---------------------------------------------------------------------------
-void ClientPipe::setDesiredAccess(ulong access)
-{
-  desiredAccess_= access;
-}
-//---------------------------------------------------------------------------
-void ClientPipe::setSharedMode(ulong mode)
-{
-  sharedMode_= mode;
-}
-//---------------------------------------------------------------------------
-tstring ClientPipe::name()const
-{
-  return name_;
-}
-//---------------------------------------------------------------------------
-void ClientPipe::setName(const tstring& name)
-{
-  name_= name;
-}
-//---------------------------------------------------------------------------
-void ClientPipe::close()
-{
-  if(isValide())
-  {
-    CloseHandle(handle_);
-    handle_= INVALID_HANDLE_VALUE;
-  }
-}
-//---------------------------------------------------------------------------
-HANDLE ClientPipe::handle()const
-{
-  return handle_;
-}
-//---------------------------------------------------------------------------
-bool ClientPipe::isValide()const
-{
-  return handle_!=INVALID_HANDLE_VALUE;
-}
-//---------------------------------------------------------------------------
-/*                      PipeReader                                         */
-//---------------------------------------------------------------------------
-PipeReader::PipeReader(ServerPipe* pipe)
-  :pipe_(pipe),
-    timeOut_(INFINITE)
-{
-}
-//---------------------------------------------------------------------------
-PipeReader::~PipeReader()
-{
-}
-//---------------------------------------------------------------------------
-void PipeReader::setPipe(ServerPipe* pipe)
-{
-  pipe_= pipe;
-}
-//---------------------------------------------------------------------------
-void PipeReader::setTimeOut(ulong msecs)
+void ServerPipe::setTimeOut(ulong msecs)
 {
   timeOut_= msecs;
 }
 //---------------------------------------------------------------------------
-ulong PipeReader::read(char* data, ulong size, ulong& errorCode)
-{    // Read From Pipe only
-  errorCode= 0;
+ulong ServerPipe::read(char *data, ulong size, ulong &errorCode)
+{
+	errorCode= 0;
   ulong length= 0;
-  BOOL success= ReadFile(pipe_->handle(),
+	BOOL success= ReadFile(handle_,
                          data,
                          size,
                          &length,
-                         &pipe_->overlapped() );
+												 &overlapped_ );
 
   if(!success)
   {
-    errorCode= GetLastError();
+		errorCode= GetLastError();
     if (errorCode==ERROR_IO_PENDING)
     {
-      ulong waitResult= WaitForSingleObject(pipe_->handle_, timeOut_);
+			ulong waitResult= WaitForSingleObject(handle_, timeOut_);
       switch(waitResult)
       {
-      case WAIT_OBJECT_0:  errorCode= ProcessError::Success;     break;
-      case WAIT_TIMEOUT:   errorCode= ProcessError::WaitTimeOut; return 0;
-      case WAIT_ABANDONED:
+      case WAIT_OBJECT_0:  errorCode= PipeError::Success;     break;
+      case WAIT_TIMEOUT:   errorCode= PipeError::WaitTimeOut; return 0;
+			case WAIT_ABANDONED:
       case WAIT_FAILED:    errorCode= GetLastError();			return 0;
       default: break;
       }
@@ -251,75 +175,103 @@ ulong PipeReader::read(char* data, ulong size, ulong& errorCode)
   }
 
   success=
-      GetOverlappedResult(pipe_->handle_,&pipe_->overlapped_,&length,false);
+			GetOverlappedResult(handle_,&overlapped_,&length,false);
 
-  if(!success)
+	if(!success)
     errorCode= GetLastError();
 
-  pipe_->overlapped().Offset+= length;
-  return length;
+	overlapped_.Offset+= length;
+	return length;
 }
 //---------------------------------------------------------------------------
-/*                          PipeWriter                                     */
+ulong ServerPipe::write(const char *data, ulong size, ulong &errorCode)
+{
+	errorCode= 0;
+	ulong length= 0;
+	BOOL success= WriteFile(handle_,
+													data,
+													size,
+													&length,
+													&overlapped_);
+
+	if (!success)
+	{
+		errorCode= GetLastError();
+		if(errorCode==ERROR_IO_PENDING)
+		{
+			ulong waitResult= WaitForSingleObject(handle_,timeOut_);
+			switch(waitResult)
+			{
+      case WAIT_OBJECT_0:  errorCode= PipeError::Success;      break;
+      case WAIT_TIMEOUT:   errorCode= PipeError::WaitTimeOut; return 0;
+			case WAIT_ABANDONED:
+			case WAIT_FAILED:    errorCode= GetLastError();     return 0;
+			default:break;
+			}
+		}
+		else
+			return 0;
+	}
+
+	success=
+			GetOverlappedResult(handle_,&overlapped_,&length,FALSE);
+
+	if(!success)
+		errorCode= GetLastError();
+
+	overlapped_.Offset+= length;
+	return length;
+}
 //---------------------------------------------------------------------------
-PipeWriter::PipeWriter(ServerPipe* pipe)
-  :pipe_(pipe),
-   timeOut_(INFINITE)
+/*                 Client Pipe                                             */
+//---------------------------------------------------------------------------
+FictiveClientPipe::FictiveClientPipe(const tstring& name)
+	:AbstractPipe(name),
+
+		desiredAccess_(GENERIC_READ),
+		sharedMode_(0),
+		flagsAndAttributes_(0)
 {
 }
 //---------------------------------------------------------------------------
-PipeWriter::~PipeWriter()
+void FictiveClientPipe::open()
 {
+  close();
+
+  SECURITY_ATTRIBUTES secAtt= { sizeof(SECURITY_ATTRIBUTES), 0,true};
+  handle_= CreateFile( name_.c_str(),
+                       desiredAccess_,
+                       0,
+                       &secAtt,
+											 OPEN_EXISTING,
+                       flagsAndAttributes_,
+                       NULL );
+  if(handle_==INVALID_HANDLE_VALUE)
+    throw SystemException("void ClientPipe::open() ");
 }
 //---------------------------------------------------------------------------
-void PipeWriter::setPipe(ServerPipe* pipe)
+void FictiveClientPipe::setFlagsAndAttributes(ulong flagsAndAttr)
 {
-  pipe_= pipe;
+  flagsAndAttributes_= flagsAndAttr;
 }
 //---------------------------------------------------------------------------
-void PipeWriter::setTimeOut(ulong msecs)
+void FictiveClientPipe::setDesiredAccess(ulong access)
 {
-  timeOut_= msecs;
+  desiredAccess_= access;
 }
 //---------------------------------------------------------------------------
-ulong PipeWriter::write(const char* data, ulong size, ulong& errorCode)
+void FictiveClientPipe::setSharedMode(ulong mode)
 {
-  // FIX: create another structure OVERLOPPAD and evetn for writting
-
-  ulong length= 0;
-  BOOL success= WriteFile(pipe_->handle(),
-                          data,
-                          size,
-                          &length,
-                          &pipe_->overlapped());
-
-  if (!success)
-  {
-    errorCode= GetLastError();
-    if(errorCode==ERROR_IO_PENDING)
-    {
-      ulong waitResult= WaitForSingleObject(pipe_->handle(),timeOut_);
-      switch(waitResult)
-      {
-      case WAIT_OBJECT_0:  errorCode= ProcessError::Success;      break;
-      case WAIT_TIMEOUT:   errorCode= ProcessError::WaitTimeOut; return 0;
-      case WAIT_ABANDONED:
-      case WAIT_FAILED:    errorCode= GetLastError();     return 0;
-      default:break;
-      }
-    }
-    else
-      return 0;
-  }
-
-  success=
-      GetOverlappedResult(pipe_->handle(),&pipe_->overlapped(),&length,FALSE);
-
-  if(!success)
-    errorCode= GetLastError();
-
-  pipe_->overlapped().Offset+= length;
-  return length;
+  sharedMode_= mode;
 }
 //---------------------------------------------------------------------------
-
+ulong FictiveClientPipe::read(char *, ulong , ulong &)
+{
+  return 0;
+}
+//---------------------------------------------------------------------------
+ulong FictiveClientPipe::write(const char *, ulong, ulong &)
+{
+  return 0;
+}
+//---------------------------------------------------------------------------

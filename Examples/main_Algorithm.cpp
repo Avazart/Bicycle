@@ -99,9 +99,9 @@ int main()
   cout<<"Ends with \"Last\": "    << boolalpha << ends_with(text,"Last")   <<endl;
 
   cout<<"Starts with case insensetive \"first\": "<< boolalpha
-     << starts_with(text,"first",CaseInsensitiveCmp<char>()) <<endl;
+      << starts_with(text,"first",CaseInsensitiveCmp<char>()) <<endl;
   cout<<"Ends with case insensetive \"last\": "<< boolalpha
-     << ends_with(text,"last",CaseInsensitiveCmp<char>()) <<endl;
+      << ends_with(text,"last",CaseInsensitiveCmp<char>()) <<endl;
 
   cout<< endl;
 
@@ -122,8 +122,19 @@ int main()
     cout<< *result.found <<endl; // in vector searched
     cout<< std::string(result.first,result.last) <<endl; // in string source
     result=
-       search_ex(result.last,text.end(),searched.begin(),searched.end());
+      search_ex(result.last,text.end(),searched.begin(),searched.end());
   }
+
+  cout<< endl;
+  text= "abc1de2f20g300j";
+  cout<<"\""<< text << "\""<< endl;
+  cout<< "apply to upper case:" << endl;
+
+  cout<< apply(text,toupper)<< endl;
+
+  string out;
+  apply("abcdef",out,toupper);
+  cout<< out << endl;
 
   getchar();
   return 0;

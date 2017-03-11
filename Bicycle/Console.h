@@ -67,6 +67,7 @@ public:
                    ulong* filled=0);
 
   static bool setCursorPos(short x,short y);
+  static bool setCursorPos(const COORD& coord);
   static COORD cursorPos();
 
 protected:

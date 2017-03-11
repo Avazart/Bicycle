@@ -1,6 +1,6 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{B3982A20-E72E-485D-A1AA-092EA01D3EA9}</ProjectGuid>
+        <ProjectGuid>{904356FE-3BF7-4A41-8DD1-E42E24686A14}</ProjectGuid>
         <ProjectVersion>14.3</ProjectVersion>
         <FrameworkType>None</FrameworkType>
         <Base>True</Base>
@@ -22,24 +22,18 @@
         <CfgParent>Base</CfgParent>
         <Base>true</Base>
     </PropertyGroup>
-    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
-        <Cfg_1_Win32>true</Cfg_1_Win32>
-        <CfgParent>Cfg_1</CfgParent>
-        <Cfg_1>true</Cfg_1>
-        <Base>true</Base>
-    </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
         <Cfg_2>true</Cfg_2>
         <CfgParent>Base</CfgParent>
         <Base>true</Base>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base)'!=''">
+        <ILINK_LibraryPath>..\..\..\..\Examples\;D:\Projects\Github\Bicycle\Examples\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <_TCHARMapping>char</_TCHARMapping>
+        <IncludePath>..\..\..\..\Examples\;D:\Projects\Github\Bicycle\Examples\;$(IncludePath)</IncludePath>
+        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
         <Multithreaded>true</Multithreaded>
         <ProjectType>CppConsoleApplication</ProjectType>
-        <IncludePath>..\..\..\..\Examples\;..\..\..\..\Bicycle\Process\;..\..\..\..\Bicycle\;$(IncludePath)</IncludePath>
-        <_TCHARMapping>char</_TCHARMapping>
-        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
-        <ILINK_LibraryPath>..\..\..\..\Examples\;..\..\..\..\Bicycle\Process\;..\..\..\..\Bicycle\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
         <DynamicRTL>true</DynamicRTL>
         <IntermediateOutputDir>.\$(Platform)\$(Config)</IntermediateOutputDir>
@@ -51,10 +45,9 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
-        <Manifest_File>None</Manifest_File>
-        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-        <PackageImports>IndyIPClient;JvGlobus;JvMM;JvManagedThreads;DBXSqliteDriver;fmx;JvDlgs;IndySystem;JvCrypt;TeeDB;vclib;inetdbbde;DBXInterBaseDriver;DataSnapClient;DataSnapCommon;DataSnapServer;JvNet;DataSnapProviderClient;JvDotNetCtrls;DBXSybaseASEDriver;DbxCommonDriver;vclimg;dbxcds;MetropolisUILiveTile;JvXPCtrls;vcldb;vcldsnap;DBXDb2Driver;OmniThreadLibraryRuntimeXE3;DBXOracleDriver;CustomIPTransport;JvCore;vclribbon;dsnap;IndyIPServer;fmxase;vcl;IndyCore;Synapse;IndyIPCommon;CloudService;DBXMSSQLDriver;FmxTeeUI;JvAppFrm;JvDB;JvRuntimeDesign;inetdbxpress;webdsnap;JclDeveloperTools;JvDocking;adortl;JvWizards;JvHMI;bindcompfmx;JvBands;vcldbx;rtl;dbrtl;DbxClientDriver;bindcomp;inetdb;JvPluginSystem;Tee;JclContainers;DBXOdbcDriver;JvCmp;JvSystem;xmlrtl;JvTimeFramework;ibxpress;JvControls;IndyProtocols;DBXMySQLDriver;soaprtl;vclactnband;bindengine;bindcompdbx;FMXTee;TeeUI;bindcompvcl;JvStdCtrls;JvCustom;Jcl;vclie;JvJans;JvPageComps;JvPrintPreview;vcltouch;bcbsmp;websnap;VclSmp;DBXInformixDriver;Intraweb;ThankBoxPack;DataSnapConnectors;dsnapcon;DBXFirebirdDriver;inet;fmxobj;SynEdit_RXE3;JclVcl;JvPascalInterpreter;Acro;vclx;DCEF_XE3;DBXSybaseASADriver;fmxdae;bdertl;dbexpress;DataSnapIndy10ServerTransport;bcbie;JvBDE;$(PackageImports)</PackageImports>
         <VerInfo_Locale>1033</VerInfo_Locale>
+        <PackageImports>IndyIPClient;JvGlobus;JvMM;JvManagedThreads;DBXSqliteDriver;fmx;JvDlgs;IndySystem;JvCrypt;TeeDB;vclib;inetdbbde;DBXInterBaseDriver;DataSnapClient;DataSnapCommon;DataSnapServer;JvNet;DataSnapProviderClient;JvDotNetCtrls;DBXSybaseASEDriver;DbxCommonDriver;vclimg;dbxcds;MetropolisUILiveTile;JvXPCtrls;vcldb;vcldsnap;DBXDb2Driver;OmniThreadLibraryRuntimeXE3;DBXOracleDriver;CustomIPTransport;JvCore;vclribbon;dsnap;IndyIPServer;fmxase;vcl;IndyCore;Synapse;IndyIPCommon;CloudService;DBXMSSQLDriver;FmxTeeUI;JvAppFrm;JvDB;JvRuntimeDesign;inetdbxpress;webdsnap;JclDeveloperTools;JvDocking;adortl;JvWizards;JvHMI;bindcompfmx;JvBands;vcldbx;SkypePkg;rtl;dbrtl;DbxClientDriver;bindcomp;inetdb;JvPluginSystem;Tee;JclContainers;DBXOdbcDriver;JvCmp;JvSystem;xmlrtl;JvTimeFramework;ibxpress;JvControls;IndyProtocols;DBXMySQLDriver;soaprtl;vclactnband;bindengine;bindcompdbx;FMXTee;TeeUI;bindcompvcl;JvStdCtrls;JvCustom;Jcl;vclie;JvJans;JvPageComps;JvPrintPreview;vcltouch;zcolor;bcbsmp;websnap;VclSmp;DBXInformixDriver;Intraweb;ThankBoxPack;DataSnapConnectors;dsnapcon;DBXFirebirdDriver;inet;fmxobj;SynEdit_RXE3;JclVcl;JvPascalInterpreter;Acro;vclx;DCEF_XE3;DBXSybaseASADriver;fmxdae;bdertl;dbexpress;DataSnapIndy10ServerTransport;bcbie;JvBDE;$(PackageImports)</PackageImports>
+        <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
         <BCC_OptimizeForSpeed>false</BCC_OptimizeForSpeed>
@@ -78,50 +71,15 @@
         <ILINK_LibraryPath>$(BDSLIB)\$(PLATFORM)\debug;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <ILINK_TranslatedLibraryPath>$(BDSLIB)\$(PLATFORM)\debug\$(LANGDIR);$(ILINK_TranslatedLibraryPath)</ILINK_TranslatedLibraryPath>
     </PropertyGroup>
-    <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <DynamicRTL>false</DynamicRTL>
-        <VerInfo_Locale>1033</VerInfo_Locale>
-    </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>
         <TASM_Debugging>None</TASM_Debugging>
     </PropertyGroup>
     <ItemGroup>
-        <CppCompile Include="..\..\..\..\Bicycle\Buffer.cpp">
-            <DependentOn>..\..\..\..\Bicycle\Buffer.h</DependentOn>
+        <CppCompile Include="..\..\..\..\Examples\main_ProcessPipes.cpp">
             <BuildOrder>1</BuildOrder>
         </CppCompile>
-        <CppCompile Include="..\..\..\..\Bicycle\Console.cpp">
-            <DependentOn>..\..\..\..\Bicycle\Console.h</DependentOn>
-            <BuildOrder>2</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="..\..\..\..\Bicycle\Global.cpp">
-            <DependentOn>..\..\..\..\Bicycle\Global.h</DependentOn>
-            <BuildOrder>3</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="..\..\..\..\Bicycle\IOStream.cpp">
-            <DependentOn>..\..\..\..\Bicycle\IOStream.h</DependentOn>
-            <BuildOrder>5</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="..\..\..\..\Bicycle\Process\Environment.cpp">
-            <BuildOrder>11</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="..\..\..\..\Bicycle\Process\Pipe.cpp">
-            <DependentOn>..\..\..\..\Bicycle\Process\Pipe.h</DependentOn>
-            <BuildOrder>9</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="..\..\..\..\Bicycle\Process\Process.cpp">
-            <DependentOn>..\..\..\..\Bicycle\Process\Process.h</DependentOn>
-            <BuildOrder>10</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="..\..\..\..\Bicycle\SystemException.cpp">
-            <DependentOn>..\..\..\..\Bicycle\SystemException.h</DependentOn>
-            <BuildOrder>7</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="..\..\..\..\Examples\main_Process.cpp">
-            <BuildOrder>11</BuildOrder>
-        </CppCompile>
-        <PCHCompile Include="TestProcessPCH1.h">
+        <PCHCompile Include="TestProcessPipesPCH1.h">
             <BuildOrder>0</BuildOrder>
         </PCHCompile>
         <BuildConfiguration Include="Release">
@@ -181,12 +139,6 @@
                     <ProjectProperties Name="ManagePaths">True</ProjectProperties>
                     <ProjectProperties Name="VerifyPackages">True</ProjectProperties>
                 </ProjectProperties>
-                <Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\bcboffice2k170.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\bcbofficexp170.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dcloffice2k170.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
-                    <Excluded_Packages Name="$(BDSBIN)\dclofficexp170.bpl">Microsoft Office XP Sample Automation Server Wrapper Components</Excluded_Packages>
-                </Excluded_Packages>
             </CPlusPlusBuilder.Personality>
             <Deployment/>
             <Platforms>

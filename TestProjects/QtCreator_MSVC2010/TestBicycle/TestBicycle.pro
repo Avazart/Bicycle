@@ -11,5 +11,8 @@ SUBDIRS += \
     TestLibrary \
     TestVolume \
     TestPath \
-    TestAlgorithm
+    TestAlgorithm \
+    TestFile \
+    TestHttpClient \
+    TestProccesPipes
 

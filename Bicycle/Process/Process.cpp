@@ -2,24 +2,6 @@
 #include "Process.h"
 //---------------------------------------------------------------------------
 using namespace Bicycle;
-//------------------ IODevice -----------------------------------------------
-ulong Process::read(char *data, ulong size, ulong &errorCode)
-{
-  if(!started_ || !usePipes_) return 0;
-  return stdOut_.reader.read(data,size,errorCode);
-}
-//---------------------------------------------------------------------------
-ulong Process::write(const char *data, ulong size, ulong &errorCode)
-{
-  if(!started_ || !usePipes_) return 0;
-  return stdIn_.writer.write(data,size,errorCode);
-}
-//---------------------------------------------------------------------------
-void Process::checkErrorCode(ulong code)const
-{
-  if(code!=ProcessError::Success)
-    throw SystemException(code);
-}
 //------------------- Process --------------------------------------------
 Process::Process(const tstring& appName,
                  const tstring& cmdLine)
@@ -85,11 +67,7 @@ void Process::createPipes()
 
   stdOut_.client.setName(stdOut_.server.name());
   stdOut_.client.setDesiredAccess(GENERIC_WRITE);
-  //stdOut_.client.setFlagsAndAttributes(0);
   stdOut_.client.open();
-
-  //stdOut_.server.connect();
-  stdOut_.reader.setPipe(&stdOut_.server);
 
   // IN
   stdIn_.server.setPipeMode(PIPE_TYPE_BYTE | PIPE_WAIT );
@@ -98,13 +76,8 @@ void Process::createPipes()
 
   stdIn_.client.setName(stdIn_.server.name());
   stdIn_.client.setDesiredAccess(GENERIC_READ);
-  //stdOut_.client.setFlagsAndAttributes(0);
   stdIn_.client.open();
 
-  //stdIn_.server.connect();
-  stdIn_.writer.setPipe(&stdIn_.server);
-
-  //
   startupInfo_.dwFlags |= STARTF_USESTDHANDLES;
   startupInfo_.hStdOutput= stdOut_.client.handle();
   startupInfo_.hStdError=  stdOut_.client.handle();
@@ -172,10 +145,10 @@ void Process::waitForInputIdle(ulong msecs,ulong* errorCode)
   switch(waitResult)
   {
   case 0:
-    error= ProcessError::Success;
+    error= PipeError::Success;
     break;
   case WAIT_TIMEOUT:
-    error= ProcessError::WaitTimeOut;
+    error= PipeError::WaitTimeOut;
     break;
   case WAIT_FAILED:
     error= GetLastError();
@@ -197,10 +170,10 @@ void Process::waitForFinished(ulong msecs,ulong* errorCode)
   switch(waitResult)
   {
   case 0:
-    error= ProcessError::Success;
+    error= PipeError::Success;
     break;
   case WAIT_TIMEOUT:
-    error= ProcessError::WaitTimeOut;
+    error= PipeError::WaitTimeOut;
     break;
   case WAIT_FAILED:
     error= GetLastError();
@@ -215,6 +188,11 @@ void Process::waitForFinished(ulong msecs,ulong* errorCode)
     checkErrorCode(error);
 }
 //---------------------------------------------------------------------------
+void Process::checkErrorCode(ulong code)
+{
+  if(code!=PipeError::Success)
+    throw SystemException(code);
+}
 // Accessors
 // ---------------------------------------------------------------------------
 void Process::usePipes(bool usePipes)
@@ -250,16 +228,6 @@ void Process::setSecurityInheritHandle(bool inheritHandle)
 void Process::setShowWindow(unsigned short showWindow)
 {
   startupInfo_.wShowWindow= showWindow;
-}
-//---------------------------------------------------------------------------
-void Process::setReadTimeOut(ulong msecs)
-{
-  stdOut_.reader.setTimeOut(msecs);
-}
-//---------------------------------------------------------------------------
-void Process::setWriteTimeOut(ulong msecs)
-{
-  stdIn_.writer.setTimeOut(msecs);
 }
 //---------------------------------------------------------------------------
 void Process::setCreationFlags(ulong flags)
@@ -345,6 +313,16 @@ ulong Process::processId()const
 ulong Process::threadId()const
 {
   return processInfo_.dwThreadId;
+}
+//---------------------------------------------------------------------------
+ServerPipe &Process::stdOut()
+{
+  return stdOut_.server;
+}
+//---------------------------------------------------------------------------
+ServerPipe &Process::stdIn()
+{
+  return stdIn_.server;
 }
 //---------------------------------------------------------------------------
 bool Process::isStarted()const

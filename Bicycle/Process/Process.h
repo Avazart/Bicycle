@@ -17,14 +17,9 @@ namespace Bicycle
 // ---------------------------------------------------------------------------
 std::size_t threadWindows(ulong threadId, std::vector<HWND>& windows);
 // ---------------------------------------------------------------------------
-class Process: public IODevice, private NonCopyable
+class Process: private NonCopyable
 {
 public:
-  //  IODevice
-  virtual ulong read(char* data, ulong size, ulong& errorCode);
-  virtual ulong write(const char* data, ulong size, ulong& errorCode);
-  virtual void checkErrorCode(ulong code) const;
-
   explicit Process(const tstring& appName= tstring(),const tstring& cmdLine= tstring());
   ~Process();
 
@@ -46,8 +41,6 @@ public:
 
   // Setters
   void usePipes(bool usePipes);
-  void setReadTimeOut(ulong msecs);
-  void setWriteTimeOut(ulong msecs);
 
   void setAppName(const tstring& appName);
   void setCmdLine(const tstring& cmdLine);
@@ -84,6 +77,11 @@ public:
   ulong processId()const;
   ulong threadId() const;
 
+  ServerPipe& stdOut();
+  ServerPipe& stdIn();
+
+  static void checkErrorCode(ulong code);
+
 private:
   void closeHandles();
   virtual void createPipes();
@@ -107,16 +105,14 @@ private:
 
   struct
   {
-    ClientPipe client;
+    FictiveClientPipe client;
     ServerPipe server;
-    PipeReader reader;
   } stdOut_;
 
   struct
   {
-    ClientPipe client;
+    FictiveClientPipe client;
     ServerPipe server;
-    PipeWriter writer;
   } stdIn_;
 };
 // ---------------------------------------------------------------------------

@@ -14,7 +14,7 @@ void print(const Bi::Strings& strings)
 int main()
 {
   Bi::tstring path=
-     L"D:/Projects/Github/Bicycle/TestProjects/QtCreator_MSVC2010/TestBicycle/TestPath/Test";
+    L"D:/Projects/Github/Bicycle/TestProjects/QtCreator_MSVC2010/TestBicycle/TestPath/Test";
   path = Bi::Path::toNativeSeparators(path);
   wcout << path<< endl;
   wcout<< L"-----------------------" <<endl;

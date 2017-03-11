@@ -1,4 +1,4 @@
-#ifdef _MSC_VER
+﻿#ifdef _MSC_VER
   #pragma once
 #endif
 //---------------------------------------------------------------------------
@@ -7,15 +7,16 @@
 //---------------------------------------------------------------------------
 #include "Global.h"
 #include "SystemException.h"
-#include "Buffer.h"
 #include "NonCopyable.h"
+#include "IODevice.h"
 //---------------------------------------------------------------------------
 namespace Bicycle
 {
 //---------------------------------------------------------------------------
-struct ProcessError  // enum class
+struct PipeError  // enum class
 {
-  enum: ulong
+enum:
+  ulong
   {
     Success= ERROR_SUCCESS,
     WaitTimeOut= WAIT_TIMEOUT,      // #258 (0x102) The wait operation timed out.
@@ -26,104 +27,77 @@ struct ProcessError  // enum class
   };
 };
 //---------------------------------------------------------------------------
-//   Server  &  Client Pipes
-//---------------------------------------------------------------------------
-class ServerPipe: private NonCopyable
+class AbstractPipe: public IODevice,private NonCopyable
 {
 public:
-  ServerPipe(const tstring& name= tstring());
-  virtual ~ServerPipe();
-
-  void create();
-  void connect();
+  AbstractPipe(const tstring& name= tstring());
+  virtual ~AbstractPipe();
 
   HANDLE handle()const;
   bool isValide()const;
-  void disconnect(ulong& errorCode);
   void close();
 
   tstring name()const;
   void setName(const tstring& name);
+
+
+  // IODevice
+  virtual void checkErrorCode(ulong code)const;
+
+protected:
+  tstring name_;
+  HANDLE handle_;
+};
+//---------------------------------------------------------------------------
+class ServerPipe: public AbstractPipe
+{
+public:
+  ServerPipe(const tstring& name= tstring());
+  ~ServerPipe();
+
+  void create();
+  void connect();
+  void disconnect(ulong& errorCode);
 
   void setOpenMode(ulong mode);
   void setPipeMode(ulong mode);
   void setBufferSize(ulong size);
 
-protected:
-  OVERLAPPED& overlapped();// used in friends PipeReader & PipeWriter
-  friend class PipeReader;
-  friend class PipeWriter;
+  void setTimeOut(ulong msecs);
+
+  // IODevice
+  virtual ulong read(char* data, ulong size, ulong& errorCode);
+  virtual ulong write(const char* data, ulong size, ulong& errorCode);
 
 private:
-  tstring name_;
+  OVERLAPPED overlapped_;
+  ulong timeOut_;
+
   ulong openMode_;
   ulong pipeMode_;
   ulong maxInstances_;
   ulong	bufferSize_;
-  ulong defaultTimeOut_;
-
-  HANDLE handle_;
-  OVERLAPPED overlapped_;
 };
 //---------------------------------------------------------------------------
-class ClientPipe: private NonCopyable
+class FictiveClientPipe: public AbstractPipe
 {
 public:
-  ClientPipe(const tstring& name= tstring());
-  virtual ~ClientPipe();
+  FictiveClientPipe(const tstring& name= tstring());
 
   void open();
-
-  HANDLE handle()const;
-  bool isValide()const;
-  void close();
-
-  tstring name()const;
-  void setName(const tstring& name);
 
   void setDesiredAccess(ulong access);
   void setSharedMode(ulong mode);
   void setFlagsAndAttributes(ulong flagsAndAttr);
 
+  // IODevice
+  virtual ulong read(char* data, ulong size, ulong& errorCode);
+  virtual ulong write(const char* data, ulong size, ulong& errorCode);
+
 private:
-  tstring name_;
   ulong desiredAccess_;
   ulong sharedMode_;
   ulong flagsAndAttributes_;
-
-  HANDLE handle_;
-};
-//---------------------------------------------------------------------------
-//    PipeReader  &  PipeWriter
-//---------------------------------------------------------------------------
-class PipeReader: private NonCopyable
-{
-public:
-  PipeReader(ServerPipe* pipe= NULL);
-  virtual ~PipeReader();
-
-  void setPipe(ServerPipe* pipe);
-  void setTimeOut(ulong msecs);
-  ulong read(char* data, ulong size, ulong& errorCode);
-
-private:
-  ServerPipe* pipe_;
-  ulong  timeOut_;
-};
-//---------------------------------------------------------------------------
-class PipeWriter: private NonCopyable
-{
-public:
-  PipeWriter(ServerPipe* pipe= NULL);
-  virtual ~PipeWriter();
-
-  void setPipe(ServerPipe* pipe);
-  void setTimeOut(ulong msecs);
-
-  ulong write(const char* data, ulong size, ulong& errorCode);
-private:
-  ServerPipe* pipe_;
-  ulong timeOut_;
 };
 //---------------------------------------------------------------------------
 }

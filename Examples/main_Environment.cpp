@@ -17,14 +17,6 @@ void print(const Bi::Environment& env)
     wcout<< env.strings()[i]<< std::endl;
 }
 // --------------------------------------------------------------------------
-Bi::tstring appFilePath()
-{
-  Bi::tstring filePath(MAX_PATH,L'\0');
-  Bi::ulong length= GetModuleFileName(0, &filePath[0], filePath.size());
-  filePath.resize(length);
-  return filePath;
-}
-// --------------------------------------------------------------------------
 int main(int argc, char* [])
 {
   // setlocale(LC_ALL, "");
@@ -53,7 +45,7 @@ int main(int argc, char* [])
       process.setShowWindow(SW_NORMAL);
       process.setCreationFlags(process.creationFlags()|CREATE_NEW_CONSOLE);
 
-      process.setCmdLine(appFilePath()+ L" -arg");
+      process.setCmdLine(Bi::appModuleFileName()+ L" -arg");
       process.start();
 
       Bi::Console::setTextAttr(Bi::ConsoleColor::blue);

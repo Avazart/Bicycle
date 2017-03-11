@@ -12,28 +12,28 @@
 
 int main()
 {
-	using namespace std;
-	namespace Bi= Bicycle;
+  using namespace std;
+  namespace Bi= Bicycle;
 
-	Bi::Console::changeCp(Bi::Win1251);
-	Bi::Console::setTextAttr(Bi::ConsoleColor::lime);
+  Bi::Console::changeCp(Bi::Win1251);
+  Bi::Console::setTextAttr(Bi::ConsoleColor::lime);
 
-	try
-	{
-		std::vector<Bi::SerialPortInfo> ports;
-		if(Bi::SerialPortInfo::availablePorts(ports))
-		{
-			for(std::size_t i=0; i<ports.size(); ++i)
-        wcout<< L"port name: " << ports[i].portName()   << endl
-             << L"hardware ids: " << ports[i].hardwareIds()<< endl
-             << L"vid: "<<hex << ports[i].parseId(L"vid_")<< endl
-             << L"pid: "<<hex << ports[i].parseId(L"pid_")<< endl
-             << L"manufacturer:" <<ports[i].manufacturer()<< endl
-             << L"description: "<<ports[i].description()<< endl
-             << L"friendly name: "<<ports[i].friendlyName()<< endl
-             << L"class guid: "<<ports[i].classGuid()<< endl
-						 << endl;
-		}
+  try
+  {
+    std::vector<Bi::SerialPortInfo> ports;
+    if(Bi::SerialPortInfo::availablePorts(ports))
+    {
+      for(std::size_t i=0; i<ports.size(); ++i)
+       wcout<< L"port name: " << ports[i].portName()   << endl
+            << L"hardware ids: " << ports[i].hardwareIds()<< endl
+            << L"vid: "<<hex << ports[i].parseId(L"vid_")<< endl
+            << L"pid: "<<hex << ports[i].parseId(L"pid_")<< endl
+            << L"manufacturer:" <<ports[i].manufacturer()<< endl
+            << L"description: "<<ports[i].description()<< endl
+            << L"friendly name: "<<ports[i].friendlyName()<< endl
+            << L"class guid: "<<ports[i].classGuid()<< endl
+            << endl;
+    }
 
     Bi::SerialPort serial;
     serial.setPortName(L"COM5");
@@ -64,13 +64,13 @@ int main()
       Bi::Console::setTextAttr(Bi::ConsoleColor::red);
       cout<< Bi::formatMessage(error)<<endl;
     }
-	}
-	catch(const Bi::SystemException& e)
-	{
-		cerr<< e.what()<<endl;
-	}
+  }
+  catch(const Bi::SystemException& e)
+  {
+    cerr<< e.what()<<endl;
+  }
 
-	getchar();
+  getchar();
   return 0;
 }
 

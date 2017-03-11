@@ -23,17 +23,15 @@ namespace Bicycle
 template<typename C, typename W>
 C wrap_copy(const C& c, const W& left,const W& right)
 {
-  iterator_range< typename range_const_iterator<W>::type >
-    lit_range_left(as_literal(left));
+  typedef typename range_const_iterator<W>::type w_iterator;
 
-  range_const_iterator<W>::type l_first= Bicycle::begin(lit_range_left);
-  range_const_iterator<W>::type l_last=  Bicycle::end(lit_range_left);
+  iterator_range<w_iterator>  lit_range_left(as_literal(left));
+  w_iterator l_first= Bicycle::begin(lit_range_left);
+  w_iterator l_last=  Bicycle::end(lit_range_left);
 
-  iterator_range< typename range_const_iterator<W>::type >
-    lit_range_right(as_literal(right));
-
-  range_const_iterator<W>::type r_first= Bicycle::begin(lit_range_right);
-  range_const_iterator<W>::type r_last=  Bicycle::end(lit_range_right);
+  iterator_range<w_iterator>  lit_range_right(as_literal(right));
+  w_iterator r_first= Bicycle::begin(lit_range_right);
+  w_iterator r_last=  Bicycle::end(lit_range_right);
 
   C out(c);
   std::copy(l_first,l_last,std::inserter(out,out.begin()));
@@ -50,17 +48,15 @@ C wrap_copy(const C& c, const W& w)
 template<typename C, typename W>
 void wrap(C& c, const W& left,const W& right)
 {
-  iterator_range< typename range_const_iterator<W>::type >
-    lit_range_left(as_literal(left));
+ typedef typename range_const_iterator<W>::type w_iterator;
 
-  range_const_iterator<W>::type l_first= Bicycle::begin(lit_range_left);
-  range_const_iterator<W>::type l_last=  Bicycle::end(lit_range_left);
+  iterator_range<w_iterator>  lit_range_left(as_literal(left));
+  w_iterator l_first= Bicycle::begin(lit_range_left);
+  w_iterator l_last=  Bicycle::end(lit_range_left);
 
-  iterator_range< typename range_const_iterator<W>::type >
-    lit_range_right(as_literal(right));
-
-  range_const_iterator<W>::type r_first= Bicycle::begin(lit_range_right);
-  range_const_iterator<W>::type r_last=  Bicycle::end(lit_range_right);
+  iterator_range<w_iterator> lit_range_right(as_literal(right));
+  w_iterator r_first= Bicycle::begin(lit_range_right);
+  w_iterator r_last=  Bicycle::end(lit_range_right);
 
   std::copy(l_first,l_last,std::inserter(c,c.begin()));
   std::copy(r_first,r_last,std::back_inserter(c));

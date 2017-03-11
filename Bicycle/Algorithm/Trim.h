@@ -175,8 +175,8 @@ trim_copy_if(OutputIteratorT output,const RangeT& input, PredicateT isSpace)
 
   range_const_iterator<RangeT>::type
       trimEnd= trim_end(Bicycle::begin(lit_range),
-                         Bicycle::end(lit_range),
-                         isSpace);
+                        Bicycle::end(lit_range),
+                        isSpace);
 
   std::copy(trim_begin(Bicycle::begin(lit_range),trimEnd,isSpace),
             trimEnd,
