@@ -21,6 +21,7 @@
 Build/
 Win32/
 __history/
+Trash_/
 
 Doc/
 
@@ -40,6 +41,7 @@ qrc_*.cpp
 ui_*.h
 Makefile*
 *build-*
+
 
 # QtCreator
 
