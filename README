@@ -1,1 +1,12 @@
-Process,Serial,TcpSocket C++ wrappers on WinApi
+Простые обвертки над WinApi:
+
+* Algorithm - некоторые алгоритмы со строками позаимствованные из boost/string/algorithm и некоторые алгоритмы из С++11/С++14
+* Win/Common - общие файлы, глобаные объявления, а  также класс TextStream для построчного чтения (с буферизацией)
+
+* Win/Process  - для порождение дочерних процессов, чтение вывода консольных утилит, изменение переменных среды
+* Win/Serial   - для работы с COM портом
+* Win/WinSocks/TcpClient - класс tcp-сокета
+
+* Win/WinInet - ftp и http клиент на основе WinInet
+
+[Мой блог на киберфоруме](http://www.cyberforum.ru/blogs/131347/blog4416.html)
