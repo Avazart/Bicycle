@@ -1,0 +1,67 @@
+#include <iostream>
+
+#include "Process/Process.h"
+#include "Console.h"
+#include "IOStream.h"
+
+int main()
+{
+  using namespace std;
+  namespace Bi= Bicycle;
+
+	Bi::Console::setTextAttr(Bi::ConsoleColor::lime);
+	try
+  {
+    Bi::Process process;
+
+    wstring progPath= L"ping";
+    wstring parms= L"google.com";
+    wstring workDir= L".";
+
+    process.setInheritHandle(true);
+    process.setSecurityInheritHandle(true);
+    process.usePipes(true);
+
+    process.setCurrentDir(workDir);
+    process.start(L"",progPath+L" "+parms);
+
+		Bi::ulong error=0;
+
+		//process.pipe().setTimeOut(30000);
+		Bi::IOStream stream(&process.pipe());
+		do
+		{
+			string line;
+			if(stream.readLine(line,error) != 0 )
+			{
+				cout<<"\""<<line<<"\""<<endl;
+			}
+		}
+		while(!error);
+
+    if(error==Bi::ProcessError::WaitTimeOut) // Read TimeOut
+    {
+      Bi::Console::setTextAttr(Bi::ConsoleColor::blue);
+      cout<<"Timeout!"<<endl;
+    }
+    else if(error==Bi::ProcessError::Broken)// Pipe closed (App Finished)
+		{
+      Bi::Console::setTextAttr(Bi::ConsoleColor::yellow);
+      cout<<"Exit code: "<< process.exitCode() <<endl;
+    }
+    else// Error
+		{
+      Bi::Console::changeCp(Bi::Win1251);
+      Bi::Console::setTextAttr(Bi::ConsoleColor::red);
+			cerr<<Bi::formatMessage(error)<<endl;
+		}
+  }
+  catch(const Bi::SystemException& e)
+  {
+    cerr<< e.what()<<endl;
+  }
+
+  getchar();
+  return 0;
+}
+
