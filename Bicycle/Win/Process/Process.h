@@ -20,8 +20,7 @@ std::size_t threadWindows(ulong threadId, std::vector<HWND>& windows);
 // ---------------------------------------------------------------------------
 struct ProcessError  // enum class
 {
-enum:
-  ulong
+enum:ulong
   {
     Success= ERROR_SUCCESS,
     WaitTimeOut= WAIT_TIMEOUT,      // #258 (0x102) The wait operation timed out.

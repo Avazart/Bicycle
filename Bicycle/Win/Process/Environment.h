@@ -15,8 +15,8 @@ namespace Bicycle
 class Environment
 {
 public:
-enum:
-  std::size_t { npos= (std::size_t)-1 };
+enum : std::size_t
+   { npos= (std::size_t)-1 };
 
   Environment();
   explicit Environment(const Strings& strings);

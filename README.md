@@ -9,7 +9,7 @@ Bicycle - набор классов обверток для Windows(WinApi,WinSo
 
 Для скачивания исходников используйте утилиту git набрав в консоли команду:
 
-git clone https://github.com/Avazart/Bicycle
+    git clone https://github.com/Avazart/Bicycle
 
 Или же используя веб интерфейс скачав исходники в zip-архиве.
 
@@ -22,14 +22,16 @@ git clone https://github.com/Avazart/Bicycle
 
 В  MSVC 2010 и С++Builder это  можно сделать используя директиву:
 
-#pragma comment(lib,"имя библиотеки")
+    #pragma comment(lib,"имя библиотеки")
 
+Папку Bicycle необходимо добавить в INCLUDEPATH среды разработки.	
+	
 Папки проекта
 -------------
 
 * Bicycle  - исходники самой библиотеки.
 * Examples - примеры кода.
-* Projects - проекты для среды разработки QtCreator для Examples.
+* Projects - проекты для сред разработки QtCreator и С++Builder для примеров Examples.
 
 Подпапки Bicycle
 ----------------
