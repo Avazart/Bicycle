@@ -12,7 +12,7 @@
 //#include <cfgmgr32.h>
 #include <devguid.h>
 
-//#define BI_USE_ALGORITHM  // use trim from Bicycle/Algorithm
+#define BI_USE_ALGORITHM  // use trim from Bicycle/Algorithm
 // ---------------------------------------------------------------------------
 namespace Bicycle
 {

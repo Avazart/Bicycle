@@ -3,8 +3,6 @@ CONFIG += console
 CONFIG -= app_bundle
 CONFIG -= qt
 
-DESTDIR = ./Dest
-
 EXAMPLES_DIR = ../../../../Examples
 BICYCLE_DIR =  ../../../../Bicycle
 

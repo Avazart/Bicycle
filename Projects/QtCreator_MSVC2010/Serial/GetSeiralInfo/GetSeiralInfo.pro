@@ -10,6 +10,8 @@ INCLUDEPATH+= $${BICYCLE_DIR}
 
 HEADERS += \
     $${BICYCLE_DIR}/Win/Serial/SerialPortInfo.h \
+    $${BICYCLE_DIR}/Algorithm/Trim.h \
+    $${BICYCLE_DIR}/Algorithm/IsAnyOf.h
 
 SOURCES += $${EXAMPLES_DIR}/Serial/GetSeiralInfo.cpp \
     $${BICYCLE_DIR}/Win/Common/Global.cpp \

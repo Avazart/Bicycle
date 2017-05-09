@@ -3,4 +3,5 @@ TEMPLATE = subdirs
 SUBDIRS += \
    RunSystemCalc \
    ReadOutputPing \
-   ReadWritePipeEchoProcess
+   ReadWritePipeEchoProcess \
+   GetSetEnvironment \

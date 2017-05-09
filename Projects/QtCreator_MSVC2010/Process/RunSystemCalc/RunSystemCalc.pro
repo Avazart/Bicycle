@@ -9,7 +9,8 @@ BICYCLE_DIR =  ../../../../Bicycle
 INCLUDEPATH+= $${BICYCLE_DIR}
 
 HEADERS += \
-    $${BICYCLE_DIR}/Win/Process/Process.h
+    $${BICYCLE_DIR}/Win/Process/Process.h \
+    $${BICYCLE_DIR}/Algorithm/Mismatch.h
 
 SOURCES += $${EXAMPLES_DIR}/Process/RunSystemCalc.cpp \
     $${BICYCLE_DIR}/Win/Common/Buffer.cpp \

@@ -5,4 +5,5 @@ SUBDIRS += \
    Serial/Serial.pro \
    WinSocks/WinSocks.pro \
    Fs/Fs.pro \
-   WinInet/WinInet.pro
+   WinInet/WinInet.pro #\
+ #  Experimental/UseResource/UseResource.pro
