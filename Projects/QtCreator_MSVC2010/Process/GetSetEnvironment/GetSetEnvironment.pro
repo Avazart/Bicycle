@@ -14,10 +14,8 @@ HEADERS += \
     $${BICYCLE_DIR}/Algorithm/Mismatch.h
 
 SOURCES += $${EXAMPLES_DIR}/Process/GetSetEnvironment.cpp \
-    $${BICYCLE_DIR}/Win/Common/Buffer.cpp \
     $${BICYCLE_DIR}/Win/Common/Global.cpp \
     $${BICYCLE_DIR}/Win/Common/Exception.cpp \
-    $${BICYCLE_DIR}/Win/Common/WaitFor.cpp \
     $${BICYCLE_DIR}/Win/Common/Event.cpp \
     $${BICYCLE_DIR}/Win/Process/Pipe.cpp \
     $${BICYCLE_DIR}/Win/Process/Process.cpp \

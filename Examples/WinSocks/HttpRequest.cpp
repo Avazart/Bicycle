@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "Win/WinSocks/TcpClient/TcpClient.h"
-#include "Win/Common/TextStream.h"
+#include "Win/TextStream/TextStream.h"
 
 // #pragma comment(lib, "Ws2_32.lib")
 

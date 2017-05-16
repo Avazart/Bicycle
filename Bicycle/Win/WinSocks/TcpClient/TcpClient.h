@@ -7,7 +7,6 @@
 //------------------------------------------------------------------------
 #include "Win/Common/Global.h"
 #include "Win/Common/IODevice.h"
-#include "Win/Common/Buffer.h"
 #include "Win/Common/NonCopyable.h"
 
 #include "Win/WinSocks/Sockets.h"

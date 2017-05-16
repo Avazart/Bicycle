@@ -14,8 +14,8 @@ HEADERS += \
 SOURCES += $${EXAMPLES_DIR}/WinSocks/HttpRequest.cpp \
     $${BICYCLE_DIR}/Win/Common/Global.cpp \
     $${BICYCLE_DIR}/Win/Common/Exception.cpp \
-    $${BICYCLE_DIR}/Win/Common/Buffer.cpp \
-    $${BICYCLE_DIR}/Win/Common/TextStream.cpp \
+    $${BICYCLE_DIR}/Win/TextStream/Buffer.cpp \
+    $${BICYCLE_DIR}/Win/TextStream/TextStream.cpp \
     $${BICYCLE_DIR}/Win/WinSocks/TcpClient/TcpClient.cpp \
     $${BICYCLE_DIR}/Win/WinSocks/WsaException.cpp \
     $${BICYCLE_DIR}/Win/WinSocks/Sockets.cpp

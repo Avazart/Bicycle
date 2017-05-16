@@ -9,7 +9,6 @@
 #include "../Common/Exception.h"
 #include "../Common/NonCopyable.h"
 #include "../Common/IODevice.h"
-#include "../Common/WaitFor.h"
 #include "../Common/Event.h"
 //---------------------------------------------------------------------------
 namespace Bicycle

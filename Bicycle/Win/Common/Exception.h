@@ -33,6 +33,8 @@ public:
   virtual const ulong code() const;
   virtual const std::string message() const;
 
+  virtual const std::wstring message_w() const;
+
 private:
   ulong code_;
 };

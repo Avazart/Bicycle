@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "Win/Fs/File.h"
-#include "Win/Common/TextStream.h"
+#include "Win/TextStream/TextStream.h"
 #include "Win/Common/Exception.h"
 
 int main()

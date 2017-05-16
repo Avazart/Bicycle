@@ -14,8 +14,8 @@ HEADERS += \
 SOURCES += $${EXAMPLES_DIR}/Fs/ReadFile.cpp \
    $${BICYCLE_DIR}/Win/Common/Global.cpp \
    $${BICYCLE_DIR}/Win/Common/Exception.cpp \
-   $${BICYCLE_DIR}/Win/Common/Buffer.cpp \
-   $${BICYCLE_DIR}/Win/Common/TextStream.cpp \
+   $${BICYCLE_DIR}/Win/TextStream/Buffer.cpp \
+   $${BICYCLE_DIR}/Win/TextStream/TextStream.cpp \
    $${BICYCLE_DIR}/Win/Fs/File.cpp
 
 LIBS += User32.lib Setupapi.lib Advapi32.lib

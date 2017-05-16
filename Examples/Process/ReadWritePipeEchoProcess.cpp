@@ -2,15 +2,14 @@
 #include <algorithm>
 
 #include "Win/Process/Process.h"
-#include "Win/Common/TextStream.h"
-#include "Win/Experimental/Console.h"
+#include "Win/TextStream/TextStream.h"
 
 int main(int argc, char *argv[])
 {
   using namespace std;
   using namespace Bicycle;
 
-  if(argc>1 && strcmp(argv[1],"-echo")==0) // эхо режим для дочернего.процесса
+  if(argc>1 && strcmp(argv[1],"-echo")==0) // эхо режим для дочернего процесса
   {
     string line;
     while(getline(cin,line))

@@ -2,7 +2,6 @@
 
 #include "Win/Process/Process.h"
 #include "Win/Process/Environment.h"
-#include "Win/Common/TextStream.h"
 
 using namespace std;
 using namespace Bicycle;

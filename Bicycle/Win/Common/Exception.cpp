@@ -33,6 +33,11 @@ const std::string SystemException::message() const
   return formatMessage(code_);
 }
 //---------------------------------------------------------------------------
+const std::wstring SystemException::message_w() const
+{
+  return formatMessageW(code_);
+}
+//---------------------------------------------------------------------------
 const ulong SystemException::code() const
 {
 	return code_;

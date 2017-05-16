@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 
 #include "Win/Serial/SerialPort.h"
-#include "Win/Common/TextStream.h"
+#include "Win/TextStream/TextStream.h"
 
 int main()
 {
