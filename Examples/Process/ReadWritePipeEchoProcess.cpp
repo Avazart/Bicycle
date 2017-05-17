@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
       process.setInheritHandle(true);
       process.setSecurityInheritHandle(true);
       process.usePipes(true);
-      // Запускаем себя с эхо режиме
+      // Запускаем себя в эхо режиме
       process.setCmdLine(appModuleFileName()+ L" -echo");
       process.start();
 

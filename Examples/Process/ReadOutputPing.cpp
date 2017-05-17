@@ -1,7 +1,7 @@
 #include <iostream>
 
 #include "Win/Process/Process.h"
-#include "Win/TextStream/TextStream.h"
+#include "Win/Process/Pipe.h"
 
 int main()
 {
@@ -14,15 +14,20 @@ int main()
     process.setSecurityInheritHandle(true);
     process.usePipes(true);
     process.start(L"",L"ping google.com");
-    process.stdOut().setTimeOut(30000);
 
-    // Используем поток для чтения из пайпа построчно
-    TextStream stream(&process.stdOut());
-    while(true)
+    ServerPipe& pipe= process.stdOut();
+    pipe.setTimeOut(30000);
+
+    const size_t bufferSize= 256;
+    char buffer[bufferSize]={'\0'};
+    ulong length= 0;
+    do
     {
-      string line = stream.readLine();
-      cout<<"\""<<line<<"\""<<endl;
+      length= pipe.read(buffer,bufferSize);
+      if(length)
+        cout<< string(buffer,length);
     }
+    while(length);
   }
   catch(const Exception& e)
   {

@@ -11,12 +11,9 @@ INCLUDEPATH+= $${BICYCLE_DIR}
 HEADERS += \
     $${BICYCLE_DIR}/Win/Process/Process.h \
     $${BICYCLE_DIR}/Win/Process/Pipe.h \
-    $${BICYCLE_DIR}/Win/TextStream/TextStream.h \
     $${BICYCLE_DIR}/Algorithm/Mismatch.h
 
 SOURCES += $${EXAMPLES_DIR}/Process/ReadOutputPing.cpp \
-    $${BICYCLE_DIR}/Win/TextStream/Buffer.cpp \
-    $${BICYCLE_DIR}/Win/TextStream/TextStream.cpp \
     $${BICYCLE_DIR}/Win/Common/Global.cpp \
     $${BICYCLE_DIR}/Win/Common/Exception.cpp \
     $${BICYCLE_DIR}/Win/Common/Event.cpp \
