@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 
 #include "Win/WinInet/HttpClient.h"
 #include "Win/TextStream/TextStream.h"

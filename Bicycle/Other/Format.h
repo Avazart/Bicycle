@@ -11,7 +11,7 @@
 #include <algorithm>
 #include <iomanip>
 
-#include "../NonCopyable.h"
+#include "Win/Common/NonCopyable.h"
 //---------------------------------------------------------------------------
 namespace Bicycle
 {
@@ -105,178 +105,311 @@ public:
   friend Format format<CharT>(const CharT* str, std::size_t n);
 
   // String
-  Format& arg(const StringT& a);
-  Format& arg(const StringT& a, int fieldWidth, CharT fillChar=' ');
+  Format& arg(const StringT& value);
+//  Format& arg(const StringT& value, int fieldWidth, CharT fillChar=' ');
+
+  Format& arg(const StringT& name,const StringT& value);
+//  Format& arg(const StringT& name,const StringT& value,
+//              int fieldWidth, CharT fillChar=' ');
 
   // Int
-  Format& arg(short a, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
-  Format& arg(unsigned short a, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+  Format& arg(short value, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+  Format& arg(unsigned short value, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+  Format& arg(const StringT& name,short value, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+  Format& arg(const StringT& name,unsigned short value, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
 
-  Format& arg(int a, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
-  Format& arg(unsigned int a,int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+  Format& arg(int value, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+  Format& arg(unsigned int value,int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+  Format& arg(const StringT& name,int value, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+  Format& arg(const StringT& name,unsigned int value,int fieldWidth = 0, int base = 10, CharT fillChar=' ');
 
-  Format& arg(long a, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
-  Format& arg(unsigned long a, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+  Format& arg(long value, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+  Format& arg(unsigned long value, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+  Format& arg(const StringT& name,long value, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+  Format& arg(const StringT& name,unsigned long value, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
 
-  Format& arg(long long a, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
-  Format& arg(unsigned long long a, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+  Format& arg(long long value, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+  Format& arg(unsigned long long value, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+  Format& arg(const StringT& name,long long value, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+  Format& arg(const StringT& name,unsigned long long value, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
 
-  Format& arg(char a, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
-//  Format& arg(bool a, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+
+  Format& arg(char value, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+  Format& arg(const StringT& name,char value, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
+
+//  Format& arg(bool value, int fieldWidth = 0, int base = 10, CharT fillChar=' ');
 
   // Float
-  Format& arg(float a, int fieldWidth = 0, char format = 'd', int precision = -1, CharT fillChar=' ');
-  Format& arg(double a, int fieldWidth = 0, char format = 'd', int precision = -1, CharT fillChar=' ');
-  Format& arg(long double a, int fieldWidth = 0, char format = 'd', int precision = -1, CharT fillChar=' ');
-
+  Format& arg(float value, int fieldWidth = 0, char format = 'd', int precision = -1, CharT fillChar=' ');
+  Format& arg(double value, int fieldWidth = 0, char format = 'd', int precision = -1, CharT fillChar=' ');
+  Format& arg(long double value, int fieldWidth = 0, char format = 'd', int precision = -1, CharT fillChar=' ');
+  Format& arg(const StringT& name,float value, int fieldWidth = 0, char format = 'd', int precision = -1, CharT fillChar=' ');
+  Format& arg(const StringT& name,double value, int fieldWidth = 0, char format = 'd', int precision = -1, CharT fillChar=' ');
+  Format& arg(const StringT& name,long double value, int fieldWidth = 0, char format = 'd', int precision = -1, CharT fillChar=' ');
   // %
-	Format& operator%(const StringT& a);
+  Format& operator%(const StringT& value);
 
   template<typename T>
-  Format& operator%(T a);
+  Format& operator%(T value);
 
   operator StringT() const;
 
 private:
-	Format(const StringT& str, std::size_t firstArgNumber=0);
-	Format(const Format& f);
+  Format(const StringT& str, std::size_t firstArgNumber=0);
+  Format(const Format& f);
 
 private:
-	StringT str_;
-	std::size_t argNumber_;
+  StringT str_;
+  std::size_t argNumber_;
 };
 //----------------------- friend format() -----------------------------------------
 template< typename CharT>
 Format<CharT> format(const std::basic_string<CharT>& str,std::size_t n)
 {
-	return Format<CharT>(str,n);
+  return Format<CharT>(str,n);
 }
 //---------------------------------------------------------------------------------
 template< typename CharT>
 Format<CharT> format(const CharT* c_str,std::size_t n)
 {
-	return Format<CharT>(c_str,n);
+  return Format<CharT>(c_str,n);
 }
 //-------------------------- String ------------------------------------------------
 template<typename CharT>
-Format<CharT>& Format<CharT>::arg(const typename Format<CharT>::StringT& a)
+Format<CharT>& Format<CharT>::arg(const typename Format<CharT>::StringT& value)
 {
   std::basic_stringstream<CharT> place;
-  place<<'%'<< (argNumber_);
-  stringReplace(str_, place.str(), a);
+  place<<'{'<< (argNumber_)<<'}';
+  stringReplace(str_, place.str(), value);
   ++argNumber_;
   return *this;
 }
 
 template<typename CharT>
-Format<CharT>& Format<CharT>::arg(const typename Format<CharT>::StringT& a,
-                                 int fieldWidth,
-                                 CharT fillChar)
+Format<CharT>& Format<CharT>::arg(const typename Format<CharT>::StringT& name,
+                                  const typename Format<CharT>::StringT& value)
 {
-  return arg(stringToString(a,fieldWidth,fillChar));
-}
-//--------------------------- Int ------------------------------------------
-template<typename CharT>
-Format<CharT>& Format<CharT>::arg(short a, int fieldWidth, int base, CharT fillChar)
-{
-  return arg(intToString(a,fieldWidth,base,fillChar));
-}
-
-template<typename CharT>
-Format<CharT>& Format<CharT>::arg(unsigned short a, int fieldWidth, int base, CharT fillChar)
-{
-  return arg(intToString(a,fieldWidth,base,fillChar));
-}
-
-template<typename CharT>
-Format<CharT>& Format<CharT>::arg(int a, int fieldWidth, int base, CharT fillChar)
-{
-  return arg(intToString(a,fieldWidth,base,fillChar));
-}
-
-template<typename CharT>
-Format<CharT>& Format<CharT>::arg(unsigned int a,int fieldWidth, int base, CharT fillChar)
-{
-  return arg(intToString(a,fieldWidth,base,fillChar));
-}
-
-template<typename CharT>
-Format<CharT>& Format<CharT>::arg(long a, int fieldWidth, int base, CharT fillChar)
-{
-  return arg(intToString(a,fieldWidth,base,fillChar));
-}
-
-template<typename CharT>
-Format<CharT>& Format<CharT>::arg(unsigned long a, int fieldWidth, int base, CharT fillChar)
-{
-  return arg(intToString(a,fieldWidth,base,fillChar));
-}
-
-template<typename CharT>
-Format<CharT>& Format<CharT>::arg(long long a, int fieldWidth, int base, CharT fillChar)
-{
-  return arg(intToString(a,fieldWidth,base,fillChar));
-}
-
-template<typename CharT>
-Format<CharT>& Format<CharT>::arg(unsigned long long a, int fieldWidth, int base, CharT fillChar)
-{
-  return arg(intToString(a,fieldWidth,base,fillChar));
-}
-
-template<typename CharT>
-Format<CharT>& Format<CharT>::arg(char a, int fieldWidth, int base, CharT fillChar)
-{
-  return arg(intToString(a,fieldWidth,base,fillChar));
+  std::basic_stringstream<CharT> place;
+  place<<'{'<<name<<'}';
+  stringReplace(str_, place.str(), value);
+  ++argNumber_;
+  return *this;
 }
 
 //template<typename CharT>
-//Format<CharT>& Format<CharT>::arg(bool a, int fieldWidth, int base, CharT fillChar)
+//Format<CharT>& Format<CharT>::arg(const typename Format<CharT>::StringT& value,
+//                                  int fieldWidth,
+//                                  CharT fillChar)
 //{
-//  return arg(intToString(a,fieldWidth,base,fillChar));
+//  return arg(stringToString(value,fieldWidth,fillChar));
+//}
+
+//template<typename CharT>
+//Format<CharT>& Format<CharT>::arg(const typename Format<CharT>::StringT& name,
+//                                  const typename Format<CharT>::StringT& value,
+//                                  int fieldWidth,
+//                                  CharT fillChar)
+//{
+//  return arg(name,stringToString(value,fieldWidth,fillChar));
+//}
+//--------------------------- Int ------------------------------------------
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(short value, int fieldWidth, int base, CharT fillChar)
+{
+  return arg(intToString(value,fieldWidth,base,fillChar));
+}
+
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(const typename Format<CharT>::StringT& name,
+                                  short value, int fieldWidth, int base, CharT fillChar)
+{
+  return arg(name,intToString(value,fieldWidth,base,fillChar));
+}
+//
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(unsigned short value, int fieldWidth, int base, CharT fillChar)
+{
+  return arg(intToString(value,fieldWidth,base,fillChar));
+}
+
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(const typename Format<CharT>::StringT& name,
+                                  unsigned short value, int fieldWidth, int base, CharT fillChar)
+{
+  return arg(name,intToString(value,fieldWidth,base,fillChar));
+}
+//
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(int value, int fieldWidth, int base, CharT fillChar)
+{
+  return arg(intToString(value,fieldWidth,base,fillChar));
+}
+
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(const typename Format<CharT>::StringT& name,
+                                  int value, int fieldWidth, int base, CharT fillChar)
+{
+  return arg(name,intToString(value,fieldWidth,base,fillChar));
+}
+//
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(unsigned int value,int fieldWidth, int base, CharT fillChar)
+{
+  return arg(intToString(value,fieldWidth,base,fillChar));
+}
+
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(const typename Format<CharT>::StringT& name,
+                                  unsigned int value,int fieldWidth, int base, CharT fillChar)
+{
+  return arg(name,intToString(value,fieldWidth,base,fillChar));
+}
+//
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(long value, int fieldWidth, int base, CharT fillChar)
+{
+  return arg(intToString(value,fieldWidth,base,fillChar));
+}
+
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(const typename Format<CharT>::StringT& name,
+                                  long value, int fieldWidth, int base, CharT fillChar)
+{
+  return arg(name,intToString(value,fieldWidth,base,fillChar));
+}
+//
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(unsigned long value, int fieldWidth, int base, CharT fillChar)
+{
+  return arg(intToString(value,fieldWidth,base,fillChar));
+}
+
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(const typename Format<CharT>::StringT& name,
+                                  unsigned long value, int fieldWidth, int base, CharT fillChar)
+{
+  return arg(name,intToString(value,fieldWidth,base,fillChar));
+}
+//
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(long long value, int fieldWidth, int base, CharT fillChar)
+{
+  return arg(intToString(value,fieldWidth,base,fillChar));
+}
+
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(const typename Format<CharT>::StringT& name,
+                                  long long value, int fieldWidth, int base, CharT fillChar)
+{
+  return arg(name,intToString(value,fieldWidth,base,fillChar));
+}
+//
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(unsigned long long value, int fieldWidth, int base, CharT fillChar)
+{
+  return arg(intToString(value,fieldWidth,base,fillChar));
+}
+
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(const typename Format<CharT>::StringT& name,
+                                  unsigned long long value, int fieldWidth, int base, CharT fillChar)
+{
+  return arg(name,intToString(value,fieldWidth,base,fillChar));
+}
+//
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(char value, int fieldWidth, int base, CharT fillChar)
+{
+  return arg(intToString(value,fieldWidth,base,fillChar));
+}
+
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(const typename Format<CharT>::StringT& name,
+                                  char value, int fieldWidth, int base, CharT fillChar)
+{
+  return arg(name,intToString(value,fieldWidth,base,fillChar));
+}
+//
+//template<typename CharT>
+//Format<CharT>& Format<CharT>::arg(bool value, int fieldWidth, int base, CharT fillChar)
+//{
+//  return arg(intToString(value,fieldWidth,base,fillChar));
 //}
 //--------------------------- Float ----------------------------------------
 template<typename CharT>
-Format<CharT>& Format<CharT>::arg(float a,
+Format<CharT>& Format<CharT>::arg(float value,
                                  int fieldWidth,
                                  char format,
                                  int precision,
                                  CharT fillChar)
 {
-  return arg(floatToString(a, fieldWidth, format, precision, fillChar));
+  return arg(floatToString(value, fieldWidth, format, precision, fillChar));
 }
 
 template<typename CharT>
-Format<CharT>& Format<CharT>::arg(double a,
+Format<CharT>& Format<CharT>::arg(const typename Format<CharT>::StringT& name,
+                                  float value,
+                                  int fieldWidth,
+                                  char format,
+                                  int precision,
+                                  CharT fillChar)
+{
+  return arg(name,floatToString(value, fieldWidth, format, precision, fillChar));
+}
+//
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(double value,
                                  int fieldWidth,
                                  char format,
                                  int precision,
                                  CharT fillChar)
 {
-  return arg(floatToString(a, fieldWidth, format, precision, fillChar));
+  return arg(floatToString(value, fieldWidth, format, precision, fillChar));
 }
 
 template<typename CharT>
-Format<CharT>& Format<CharT>::arg(long double a,
+Format<CharT>& Format<CharT>::arg(const typename Format<CharT>::StringT& name,
+                                  double value,
+                                  int fieldWidth,
+                                  char format,
+                                  int precision,
+                                  CharT fillChar)
+{
+  return arg(name,floatToString(value, fieldWidth, format, precision, fillChar));
+}
+//
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(long double value,
                                  int fieldWidth,
                                  char format,
                                  int precision,
                                  CharT fillChar)
 {
-  return arg(floatToString(a, fieldWidth, format, precision, fillChar));
+  return arg(floatToString(value, fieldWidth, format, precision, fillChar));
+}
+
+template<typename CharT>
+Format<CharT>& Format<CharT>::arg(const typename Format<CharT>::StringT& name,
+                                  long double value,
+                                  int fieldWidth,
+                                  char format,
+                                  int precision,
+                                  CharT fillChar)
+{
+  return arg(name,floatToString(value, fieldWidth, format, precision, fillChar));
 }
 //----------------------------------------------------------------------------
 template<typename CharT>
 template<typename T>
-Format<CharT>& Format<CharT>::operator%(T a)
+Format<CharT>& Format<CharT>::operator%(T value)
 {
-   return arg(a);
+   return arg(value);
 }
 
 template<typename CharT>
-Format<CharT>& Format<CharT>::operator%(const typename Format<CharT>::StringT& a)
+Format<CharT>& Format<CharT>::operator%(const typename Format<CharT>::StringT& value)
 {
-   return arg(a);
+   return arg(value);
 }
 //----------------------------------------------------------------------------
 template<typename CharT>
@@ -287,17 +420,17 @@ Format<CharT>::operator StringT() const
 //---------------------------------------------------------------------------
 template<typename CharT>
 Format<CharT>::Format(const typename Format<CharT>::StringT &str,
-											size_t firstArgNumber)
-	: str_(str),
-		argNumber_(firstArgNumber)
+                      size_t firstArgNumber)
+  : str_(str),
+    argNumber_(firstArgNumber)
 {
 }
 //---------------------------------------------------------------------------
 template<typename CharT>
 Format<CharT>::Format(const Format& f)
 {
-	str_= f.str_;
-	argNumber_= f.argNumber_;
+  str_= f.str_;
+  argNumber_= f.argNumber_;
 }
 //---------------------------------------------------------------------------
 } // Bicycle

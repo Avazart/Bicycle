@@ -6,6 +6,7 @@ SUBDIRS += \
    WinSocks/WinSocks.pro \
    Fs/Fs.pro \
    WinInet/WinInet.pro \
-   Console
+   Console \
+   Other/Other.pro
  #  Console/Console.pro #\
  #  Experimental/UseResource/UseResource.pro

@@ -1,4 +1,4 @@
-#ifdef _MSC_VER
+﻿#ifdef _MSC_VER
   #pragma once
 #endif
 // ---------------------------------------------------------------------------
@@ -39,7 +39,12 @@ public:
 		void closeUrl();
 
 		ulong statusCode();
-    ulong contentLength();
+        ulong contentLength();
+
+		static void setCookie(const tstring& url, const tstring& cookieName, const tstring& cookieData);
+		static void setCookie(const tstring& url, const tstring& cookieNameData);
+
+		static tstring cookie(const tstring& url, const tstring& cookieName= tstring());
 
 		SYSTEMTIME date();
 		tstring dateString();

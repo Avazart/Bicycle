@@ -98,23 +98,29 @@ ulong AbstractNamedPipe::read(char *data, ulong size)
   overlapped.hEvent=  event.handle();
 
   ulong length= 0;
-  BOOL success= ReadFile(handle_,
+  BOOL done= ReadFile(handle_,
                        data,
                        size,
                        &length,
                        &overlapped );
+  ulong error = GetLastError();
 
-
-  if (!success)
+  if(!done && error==ERROR_IO_PENDING)
   {
-    ulong error=GetLastError();
-    if(error==ERROR_IO_PENDING)
-        waitFor(overlapped.hEvent,cancelEvent_.handle(),timeOut_);
-    else
-       throw SystemException(error);
+    waitFor(overlapped.hEvent,cancelEvent_.handle(),timeOut_);
+    done= true;
   }
-  if(!GetOverlappedResult(handle_,&overlapped,&length,FALSE))
-    throw SystemException();
+
+  if(done)
+  {
+    if(overlapped.Internal!=0)
+       throw SystemException(overlapped.Internal);
+    return overlapped.InternalHigh; // length
+  }
+  else
+  {
+    throw SystemException(error);
+  }
 
   return length;
 }
@@ -126,25 +132,30 @@ ulong AbstractNamedPipe::write(const char *data, ulong size)
   overlapped.hEvent=  event.handle();
 
   ulong length= 0;
-  BOOL success= WriteFile(handle_,
+  BOOL done= WriteFile(handle_,
                           data,
                           size,
                           &length,
                           &overlapped);
 
-  if (!success)
+  ulong error = GetLastError();
+
+  if(!done && error==ERROR_IO_PENDING)
   {
-    ulong error=GetLastError();
-    if(error==ERROR_IO_PENDING)
-        waitFor(overlapped.hEvent,cancelEvent_.handle(),timeOut_);
-    else
-       throw SystemException(error);
+    waitFor(overlapped.hEvent,cancelEvent_.handle(),timeOut_);
+    done= true;
   }
 
-  if(!GetOverlappedResult(handle_,&overlapped,&length,FALSE))
-    throw SystemException();
-
-  return length;
+  if(done)
+  {
+    if(overlapped.Internal!=0)
+       throw SystemException(overlapped.Internal);
+    return overlapped.InternalHigh; // length
+  }
+  else
+  {
+    throw SystemException(error);
+  }
 }
 //---------------------------------------------------------------------------
 /*             Server Pipe                                                 */
