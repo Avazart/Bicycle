@@ -1,13 +1,13 @@
 #ifdef _MSC_VER
-#pragma once
+  #pragma once
 #endif
 //----------------------------------------------------------
 #ifndef AnyH
 #define AnyH
 //----------------------------------------------------------
-#define USE_COMPARE_OPERATORS
 #define USE_CPP_11
 
+#include <algorithm>
 #include "Value.h"
 //----------------------------------------------------------
 namespace Bicycle
@@ -16,116 +16,102 @@ namespace Bicycle
 class AbstractHolder
 {
 public:
-	virtual void* clone(void* ptr) = 0;
-	virtual void destroy(void* ptr) = 0;
-
-#ifdef USE_COMPARE_OPERATORS
-	virtual bool equal(void* ptr1, void* ptr2) = 0;
-	virtual bool less(void* ptr1, void* ptr2) = 0;
-	virtual bool greater(void* ptr1, void* ptr2) = 0;
-#endif
+  virtual void* clone(void* ptr) = 0;
+  virtual void destroy(void* ptr) = 0;
 };
 //----------------------------------------------------------
 template<typename T>
 class Holder : public AbstractHolder
 {
 public:
-	void* clone(void* ptr)
-	{
-		return new T(*static_cast<T*>(ptr));
-	}
+  void* clone(void* ptr)
+  {
+    return new T(*static_cast<T*>(ptr));
+  }
 
-	virtual void destroy(void* ptr)
-	{
-		if (ptr)
-			delete static_cast<T*>(ptr);
-	}
+  virtual void destroy(void* ptr)
+  {
+    if (ptr)
+      delete static_cast<T*>(ptr);
+  }
+};
+//----------------------------------------------------------
+// Array specilization
+template<typename T,int N>
+class Holder<T[N]> : public AbstractHolder
+{
+public:
+  void* clone(void* ptr)
+  {
+    T* originalArray= static_cast<T*>(ptr);
+    T* copyOfArray = new T[N];
+    std::copy(originalArray,originalArray+N,copyOfArray);
+    return copyOfArray;
+  }
 
-#ifdef USE_COMPARE_OPERATORS
-	virtual bool equal(void* ptr1, void* ptr2) // ==
-	{
-		if (ptr1 && ptr2)
-			return  (*static_cast<T*>(ptr1)) == (*static_cast<T*>(ptr2));
-
-		return (ptr1==0) && (ptr2==0);
-	}
-
-	virtual bool less(void* ptr1, void* ptr2) // <
-	{
-		if(ptr1 && ptr2)
-			return  (*static_cast<T*>(ptr1)) < (*static_cast<T*>(ptr2));
-
-		return false;
-	}
-
-	virtual bool greater(void* ptr1, void* ptr2) // >
-	{
-		if (ptr1 && ptr2)
-			return  (*static_cast<T*>(ptr1)) > (*static_cast<T*>(ptr2));
-
-		return false;
-	}
-#endif
+  virtual void destroy(void* ptr)
+  {
+    if (ptr)
+      delete[] static_cast<T*>(ptr);
+  }
 };
 //----------------------------------------------------------
 template<typename T>
 Holder<T>* makeHolder()
 {
-	static Holder<T> Holder;
-	return &Holder;
+  static Holder<T> Holder;
+  return &Holder;
 }
 //======================== Any =============================
 class Any
 {
 public:
-	Any();
+  Any();
 
-	template<typename T>
-	Any(const T& value);
+  // Simple types
+  template<typename T>
+  Any(const T& value);
 
-	Any(const Any& other);
-	Any& operator=(const Any& other);
+  template<typename T>
+  Any& operator=(const T& value);
+
+  // Array and C-string
+  template<typename A,int N>
+  Any(const A(& array)[N]);
+
+  template<typename T,int N>
+  Any& operator=(const T(& array)[N]);
+
+  //
+
+  Any(const Any& other);
+  Any& operator=(const Any& other);
 
 #ifdef USE_CPP_11
-	Any(Any&& other);
-	Any& operator=(Any&& other);
+  Any(Any&& other);
+  Any& operator=(Any&& other);
 #endif
 
-	~Any();
+  ~Any();
 
-	void clear();
-	bool empty()const;
+  void clear();
+  bool empty()const;
 
-	template<typename T>
-	bool isType()const;
+  template<typename T>
+  bool isType()const;
 
+  template<typename T>
+  const T& cast() const;
 
-	template<typename T>
-	Any& operator=(const T& value);
+  template<typename T>
+  T& cast();
 
-	template<typename T>
-	const T& cast() const;
+  template<typename T>
+  bool tryCast(T& value) const;
 
-	template<typename T>
-	T& cast();
+  void swap(Any& other);
 
-	template<typename T>
-	bool tryCast(T& value) const;
-
-	void swap(Any& other);
-
-	bool isType(const Any& other)const;
-
-#ifdef USE_COMPARE_OPERATORS
-	bool operator==(const Any& other)const;
-	bool operator!=(const Any& other)const;
-
-	bool operator<(const Any& other)const;
-	bool operator>(const Any& other)const;
-
-	bool operator<=(const Any& other)const;
-	bool operator>=(const Any& other)const;
-#endif
+  bool isType(const Any& other)const;
 
 #ifdef ValueH
   template<typename T>
@@ -133,73 +119,94 @@ public:
 #endif
   
 private:
-	void checkType(const Any& other)const;
-
-	void* ptr_;
-	AbstractHolder* holder_;
+  AbstractHolder* holder_;
+  void* ptr_;
 };
 //================== not member ============================
 template<typename T>
 const T& anyCast(const Any& other)
 {
-	return other.cast<T>();
+  return other.cast<T>();
 }
 //----------------------------------------------------------
 void swap(Any &a1, Any &a2);
 //================== member ================================
 template<typename T>
 Any::Any(const T &value)
-	: ptr_(new T(value)),
-	  holder_(makeHolder<T>())
+  : holder_(makeHolder<T>()),
+    ptr_(new T(value))
 {
+}
+//----------------------------------------------------------
+template<typename T,int N>
+Any::Any(const T(& array)[N])
+  : holder_(makeHolder<T[N]>())
+{
+   ptr_ = static_cast<void*>(new T[N]);
+   std::copy(array,array+N,static_cast<T*>(ptr_));
 }
 //----------------------------------------------------------
 template<typename T>
 Any &Any::operator=(const T& value)
 {
-	void* ptr = new T(value);
-	std::swap(ptr_, ptr);
-	if (!empty())
-	{
-		holder_->destroy(ptr);
-		holder_ = makeHolder<T>();
-	}
-	return *this;
+  void* ptr = new T(value);
+  std::swap(ptr_, ptr);
+
+  if (ptr)
+     holder_->destroy(ptr);
+
+  holder_ = makeHolder<T>();
+  return *this;
+}
+//----------------------------------------------------------
+template<typename T, int N>
+Any &Any::operator=(const T(& array)[N])
+{
+  void* ptr = static_cast<void*>(new T[N]);
+  std::copy(array,array+N, static_cast<T*>(ptr));
+
+  std::swap(ptr_, ptr);
+
+  if(ptr)
+     holder_->destroy(ptr);
+
+  holder_ = makeHolder<T[N]>();
+  return *this;
 }
 //----------------------------------------------------------
 template<typename T>
 bool Any::isType()const
 {
-	return holder_ == makeHolder<T>();
+  return holder_ == makeHolder<T>();
 }
 //----------------------------------------------------------
 template<typename T>
 const T& Any::cast() const
 {
-	if (isType<T>())
-		return *(static_cast<T*>(ptr_));
-	else
-		throw std::bad_cast();
+  if (isType<T>())
+    return *(static_cast<T*>(ptr_));
+  else
+    throw std::bad_cast();
 }
 //----------------------------------------------------------
 template<typename T>
 T& Any::cast()
 {
-	if (isType<T>())
-		return *(static_cast<T*>(ptr_));
-	else
-		throw std::bad_cast();
+  if (isType<T>())
+    return *(static_cast<T*>(ptr_));
+  else
+    throw std::bad_cast();
 }
 //----------------------------------------------------------
 template<typename T>
 bool Any::tryCast(T& value) const
 {
-	if (isType<T>())
-	{
-		value = *(static_cast<T*>(ptr_));
-		return true;
-	}
-	return false;
+  if (isType<T>())
+  {
+    value = *(static_cast<T*>(ptr_));
+    return true;
+  }
+  return false;
 }
 
 //----------------------------------------------------------

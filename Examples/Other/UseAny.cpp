@@ -24,20 +24,23 @@ int main()
   a1 = a2;
   assert(a1.isType<string>() && a1.cast<string>() == "str");
 
-  Any a4= a3;
 
-  assert(a4==a3);
+  Any a4("test");
+  assert(a4.isType<char[5]>());
 
-  a4 = 20;
-  assert(a4>a3);
+  cout <<  a4.cast<char[5]>() << endl;
 
-  vector<Any> va;
-  for(size_t i=0; i<10; ++i)
-    va.push_back(rand()%10);
 
-  sort(va.begin(),va.end());
-  for(size_t i=0; i<va.size(); ++i)
-    cout<< va[i].cast<int>() <<endl;
+  int ia[3]= {1,2,3};
+
+  Any a5(ia);
+  assert(a5.isType<int[3]>());
+  for(size_t i=0; i<3; ++i)
+    cout << a5.cast<int[3]>()[i] <<std::endl;
+
+  Any a6;
+  a6 = "test";
+  assert(a6.isType<char[5]>());
 
   return 0;
 }
