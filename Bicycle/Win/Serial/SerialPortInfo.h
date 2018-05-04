@@ -19,7 +19,7 @@ namespace Bicycle
 //---------------------------------------------------------------------------
 namespace Hardware
 {
-	enum Id{ vid, pid, dev, ven, rev , func , subsys, prot };
+  enum Id:std::size_t{ vid, pid, dev, ven, rev , func , subsys, prot };
 
 	extern const std::size_t idSize;
 	extern const tstring idPrefixes[];

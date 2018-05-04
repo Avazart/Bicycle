@@ -27,9 +27,7 @@ int main()
 
   Any a4("test");
   assert(a4.isType<char[5]>());
-
   cout <<  a4.cast<char[5]>() << endl;
-
 
   int ia[3]= {1,2,3};
 
