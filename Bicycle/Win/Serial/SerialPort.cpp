@@ -44,6 +44,34 @@ ulong SerialPort::waitEvent()
 //------------------ IODevice -------------------------------------
 ulong SerialPort::read(char *data, ulong size)
 {
+  Event event;
+  OVERLAPPED overlapped= {0,0,{{0,0}},event.handle()};
+
+  ulong length = 0, state = 0;
+  if(!SetCommMask(handle_, EV_RXCHAR))
+    throw SystemException();
+
+  waitEvent(state, overlapped);
+  waitFor(overlapped.hEvent,cancelEvent_.handle(),timeOut_);
+
+  BOOL done= ReadFile(handle_, data, size, &length, &overlapped);
+  ulong error = GetLastError();
+  if(!done && error==ERROR_IO_PENDING)
+  {
+    waitFor(overlapped.hEvent,cancelEvent_.handle(),timeOut_);
+    done= true;
+  }
+
+  if(done)
+  {
+    if(overlapped.Internal!=0)
+       throw SystemException(overlapped.Internal);
+    return overlapped.InternalHigh; // length
+  }
+  else
+    throw SystemException(error);  
+  
+  /*
   OVERLAPPED overlapped= {0};
   Event event;
   overlapped.hEvent= event.handle();
@@ -63,6 +91,7 @@ ulong SerialPort::read(char *data, ulong size)
      return stat.cbInQue;
   }
   return 0;
+  */  
 }
 // ---------------------------------------------------------------------------
 ulong SerialPort::write(const char* data, ulong size)

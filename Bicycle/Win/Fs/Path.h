@@ -41,6 +41,36 @@ namespace Path
     AllEntries= Files|Dirs|Recursive
   };
 
+
+  class FileInfo
+  {
+    public:
+
+       void setDir(const tstring& dir);
+       tstring dir()const;
+
+       tstring filePath() const;
+
+       tstring fileName() const;
+       tstring alternateFileName() const;
+       ulong   attributes() const;
+
+       const WIN32_FIND_DATA& constData()const;
+       WIN32_FIND_DATA& data();
+    private:
+       WIN32_FIND_DATA data_;
+       tstring dir_;
+  };
+
+  typedef std::vector<FileInfo> FileInfoVector;
+
+  // Search files and dirs
+  size_t entry(FileInfoVector& entries,
+               const tstring& dir,
+               const tstring& mask= tstring(TEXT("*")),
+               EntryFlags flags= Entries,
+               const tstring& subDir= tstring());
+
   // Search files and dirs
   size_t entry(Strings& entries,
                const tstring& dir,
@@ -74,13 +104,17 @@ namespace Path
   // removeDir()
   // makeDir()
   // copyDir()
-
+  // GetFullPathName.
   // appPath()
+  tstring shortPathName(const tstring& path);
+  tstring fullPathName(const tstring &shortFileName);
 
-  // bool hasPrefix(const tstring& path)
-  // void appendPrefix(tstring& path)
-  // bool quoted() / wrapped()
-  // void normolize(tstring& path)  // add prefix and quote
+  bool hasPrefix(const tstring& path);
+
+  bool quoted(const tstring &path);
+  bool hasSpace(const tstring &path);
+
+  tstring normalize(const tstring& path);  // add prefix and quote
 
 } // Path
 // --------------------------------------------------------------------------
